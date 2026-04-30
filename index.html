@@ -3,180 +3,166 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Booking Xe Giao Hàng — Nhất Lâm</title>
+<title>Booking Xe — Nhất Lâm</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
   --g:#1a6b3a;--gl:#eaf3de;--gd:#145730;--gt:#3B6D11;
-  --bg:#f5f6f8;--card:#fff;--border:#e0e3e8;--border2:#c8cdd6;
+  --bg:#f0f2f5;--card:#fff;--border:#e0e3e8;--border2:#c8cdd6;
   --txt:#1a1d23;--txt2:#6b7280;--txt3:#9ca3af;
   --info-bg:#e6f1fb;--info:#185FA5;
   --radius:10px;--radius-sm:7px;
 }
 body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:var(--bg);color:var(--txt);font-size:14px;min-height:100vh}
 
-/* HEADER */
-.app-header{background:var(--g);padding:14px 20px;display:flex;align-items:center;gap:12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.15)}
-.app-logo{width:36px;height:36px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
-.app-co{font-size:10px;color:rgba(255,255,255,.75);text-transform:uppercase;letter-spacing:.06em}
-.app-title{font-size:16px;font-weight:600;color:#fff}
-.header-right{margin-left:auto;display:flex;align-items:center;gap:8px}
-.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:6px 12px;border-radius:6px;font-size:12px;font-weight:500;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:5px;transition:background .15s}
+.app-header{background:var(--g);padding:12px 20px;display:flex;align-items:center;gap:10px;position:sticky;top:0;z-index:100;box-shadow:0 2px 8px rgba(0,0,0,.18)}
+.app-logo{width:34px;height:34px;background:rgba(255,255,255,.2);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.app-co{font-size:9px;color:rgba(255,255,255,.7);text-transform:uppercase;letter-spacing:.06em}
+.app-title{font-size:15px;font-weight:600;color:#fff}
+.header-right{margin-left:auto;display:flex;align-items:center;gap:6px}
+.hbtn{background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;padding:5px 10px;border-radius:6px;font-size:11px;font-weight:500;cursor:pointer;text-decoration:none;display:flex;align-items:center;gap:4px;transition:background .15s}
 .hbtn:hover{background:rgba(255,255,255,.25)}
 
-/* TABS */
-.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);padding:0 20px;position:sticky;top:65px;z-index:99}
-.tab{padding:12px 16px;font-size:13px;font-weight:500;color:var(--txt2);cursor:pointer;border-bottom:2px solid transparent;display:flex;align-items:center;gap:6px;transition:all .15s}
+.tabs{display:flex;background:var(--card);border-bottom:1px solid var(--border);padding:0 16px;position:sticky;top:58px;z-index:99;overflow-x:auto}
+.tab{padding:10px 14px;font-size:12px;font-weight:500;color:var(--txt2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;display:flex;align-items:center;gap:5px;transition:all .15s}
 .tab:hover{color:var(--txt)}
 .tab.on{color:var(--g);border-bottom-color:var(--g)}
-.tab-ic{font-size:15px}
 
-/* LAYOUT */
-.main{max-width:820px;margin:0 auto;padding:20px 16px 40px}
+.main{max-width:780px;margin:0 auto;padding:16px 14px 40px}
 
 /* SECTION */
-.sec{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 20px;margin-bottom:12px}
-.sec-hd{font-size:11px;font-weight:600;color:var(--txt2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px;display:flex;align-items:center;gap:6px}
-.snum{width:20px;height:20px;border-radius:50%;background:var(--info-bg);color:var(--info);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.sec{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 18px;margin-bottom:10px}
+.sec-hd{font-size:10.5px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px;display:flex;align-items:center;gap:6px}
+.snum{width:18px;height:18px;border-radius:50%;background:var(--info-bg);color:var(--info);font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 
 /* GRID */
-.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
-.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:10px}
-@media(max-width:600px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}.g4{grid-template-columns:1fr 1fr}}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.g4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:8px}
+@media(max-width:580px){.g2,.g3,.g4{grid-template-columns:1fr 1fr}}
 
 /* FIELD */
-.f{display:flex;flex-direction:column;gap:4px}
-.f label{font-size:11px;font-weight:500;color:var(--txt2)}
+.f{display:flex;flex-direction:column;gap:3px}
+.f label{font-size:10.5px;font-weight:600;color:var(--txt2);letter-spacing:.02em}
 .f label .req{color:#e24b4a;margin-left:2px}
 .f input,.f select,.f textarea{
-  font-size:13px;padding:8px 10px;
+  font-size:13px;padding:7px 9px;
   border:1px solid var(--border2);border-radius:var(--radius-sm);
   background:#fff;color:var(--txt);width:100%;
   transition:border-color .15s,box-shadow .15s;
   appearance:none;-webkit-appearance:none;
 }
-.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 10px center;padding-right:28px}
+.f select{background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236b7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 9px center;padding-right:26px}
 .f input:focus,.f select:focus,.f textarea:focus{outline:none;border-color:var(--g);box-shadow:0 0 0 3px rgba(26,107,58,.1)}
-.f textarea{resize:vertical;min-height:60px;line-height:1.5}
+.f textarea{resize:vertical;min-height:52px;line-height:1.5;font-size:13px}
 
-/* XE TYPE CARDS */
-.xc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:10px}
-.xc{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:10px;cursor:pointer;text-align:center;transition:all .15s;user-select:none}
+/* XE TYPE */
+.xc-row{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;margin-bottom:8px}
+.xc{border:1.5px solid var(--border);border-radius:var(--radius-sm);padding:9px 8px;cursor:pointer;text-align:center;transition:all .15s;user-select:none}
 .xc:hover{border-color:var(--border2);background:#fafbfc}
 .xc.on{border-color:var(--g);background:var(--gl)}
-.xc .xi{font-size:22px;margin-bottom:4px}
+.xc .xi{font-size:20px;margin-bottom:3px}
 .xc .xn{font-size:13px;font-weight:600;color:var(--txt)}
-.xc .xt{font-size:11px;color:var(--txt2);margin-top:2px}
+.xc .xt{font-size:10.5px;color:var(--txt2);margin-top:1px}
 .xc.on .xn{color:var(--g)}
 .xc.on .xt{color:var(--gt)}
-.temp-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600}
-.td{background:#E6F1FB;color:#185FA5}
-.tm{background:#eaf3de;color:#3B6D11}
-.tk{background:#f3f4f6;color:#4b5563}
+.temp-badge{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:20px;font-size:11.5px;font-weight:600}
+.td{background:#E6F1FB;color:#185FA5}.tm{background:#eaf3de;color:#3B6D11}.tk{background:#f3f4f6;color:#4b5563}
 
 /* XE ROWS */
-.xe-rows{display:flex;flex-direction:column;gap:8px}
-.xe-row{background:#f8f9fb;border:1px solid var(--border);border-radius:var(--radius-sm);padding:10px 14px}
-.xe-rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-.xe-rl{font-size:12px;font-weight:600;color:var(--txt2)}
-.bdel{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:14px;padding:2px 7px;border-radius:5px;line-height:1;transition:all .15s}
+.xe-rows{display:flex;flex-direction:column;gap:7px}
+.xe-row{background:#f8f9fb;border:1px solid var(--border);border-radius:var(--radius-sm);padding:9px 12px}
+.xe-rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:7px}
+.xe-rl{font-size:11.5px;font-weight:700;color:var(--txt2)}
+.bdel{background:none;border:none;color:var(--txt3);cursor:pointer;font-size:13px;padding:2px 6px;border-radius:5px;transition:all .15s}
 .bdel:hover{background:#fee2e2;color:#b91c1c}
-.badd{width:100%;padding:9px;border:1.5px dashed var(--border2);border-radius:var(--radius-sm);background:none;color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer;margin-top:8px;transition:all .15s}
+.badd{width:100%;padding:8px;border:1.5px dashed var(--border2);border-radius:var(--radius-sm);background:none;color:var(--txt2);font-size:12px;font-weight:500;cursor:pointer;margin-top:7px;transition:all .15s}
 .badd:hover{background:var(--gl);border-color:var(--g);color:var(--gt)}
 
 /* KHO LIST */
-.kl{display:flex;flex-direction:column;gap:5px}
-.ki{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;user-select:none}
+.kl{display:flex;flex-direction:column;gap:4px}
+.ki{display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid var(--border);border-radius:var(--radius-sm);cursor:pointer;transition:all .15s;user-select:none}
 .ki:hover{background:#f8f9fb;border-color:var(--border2)}
 .ki.on{border-color:var(--g);background:var(--gl)}
-.cb{width:16px;height:16px;border:1.5px solid var(--border2);border-radius:4px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
+.cb{width:15px;height:15px;border:1.5px solid var(--border2);border-radius:3px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s}
 .ki.on .cb{background:var(--g);border-color:var(--g)}
-.ki.on .cb::after{content:'';width:8px;height:5px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block}
-.kn{font-size:13px;color:var(--txt);flex:1;font-weight:500}
-.ka{font-size:11px;color:var(--txt3)}
+.ki.on .cb::after{content:'';width:7px;height:4px;border-left:2px solid #fff;border-bottom:2px solid #fff;transform:rotate(-45deg) translateY(-1px);display:block}
+.kn{font-size:12.5px;color:var(--txt);flex:1;font-weight:500}
+.ka{font-size:10.5px;color:var(--txt3)}
+.kl-loading{font-size:12px;color:var(--txt3);padding:10px;text-align:center}
 
 /* TAGS */
-.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:6px}
-.tag{padding:5px 11px;border:1px solid var(--border);border-radius:20px;font-size:12px;color:var(--txt2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
+.tags{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.tag{padding:4px 10px;border:1px solid var(--border);border-radius:20px;font-size:11.5px;color:var(--txt2);cursor:pointer;transition:all .15s;white-space:nowrap;user-select:none}
 .tag:hover{border-color:var(--border2);background:#f8f9fb}
 .tag.on{background:var(--gl);border-color:var(--g);color:var(--gt);font-weight:600}
 
 /* BUTTONS */
-.sub-row{display:flex;gap:8px;margin-top:16px}
-.bsub{flex:1;padding:11px 16px;background:var(--g);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
+.sub-row{display:flex;gap:8px;margin-top:14px}
+.bsub{flex:1;padding:10px 16px;background:var(--g);color:#fff;border:none;border-radius:var(--radius-sm);font-size:14px;font-weight:600;cursor:pointer;transition:background .15s}
 .bsub:hover{background:var(--gd)}
 .bsub:disabled{background:#9ca3af;cursor:not-allowed}
-.brst{padding:11px 14px;background:#fff;color:var(--txt2);border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:13px;cursor:pointer;transition:all .15s}
+.brst{padding:10px 14px;background:#fff;color:var(--txt2);border:1px solid var(--border2);border-radius:var(--radius-sm);font-size:12.5px;cursor:pointer;transition:all .15s}
 .brst:hover{background:#f8f9fb}
 
 /* PHIẾU */
 #view-phieu{display:none}
-.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);cursor:pointer;margin-bottom:14px;padding:5px 0;font-weight:500}
+.back-btn{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--txt2);cursor:pointer;margin-bottom:12px;padding:4px 0;font-weight:500}
 .back-btn:hover{color:var(--txt)}
+.note-box{background:var(--info-bg);border:1px solid #b5d4f4;border-radius:var(--radius-sm);padding:9px 13px;font-size:11.5px;color:#185FA5;margin-bottom:12px;line-height:1.6}
+.note-box strong{font-weight:700}
 
-.note-box{background:var(--info-bg);border:1px solid #b5d4f4;border-radius:var(--radius-sm);padding:10px 14px;font-size:12px;color:#185FA5;margin-bottom:14px;line-height:1.7}
-.note-box strong{font-weight:600}
-
-.phieu{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:20px 24px;font-family:inherit}
-.phieu-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:12px;border-bottom:2px solid var(--g);margin-bottom:14px}
-.phieu-lb{width:40px;height:40px;background:var(--g);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:14px;flex-shrink:0}
-.phieu-co-name{font-size:10px;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em}
-.phieu-doc-name{font-size:15px;font-weight:700;color:var(--txt);margin-top:2px}
+.phieu{background:#fff;border:1px solid var(--border);border-radius:var(--radius);padding:18px 20px}
+.phieu-hdr{display:flex;align-items:flex-start;justify-content:space-between;padding-bottom:10px;border-bottom:2px solid var(--g);margin-bottom:12px}
+.phieu-lb{width:36px;height:36px;background:var(--g);border-radius:7px;display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:13px;flex-shrink:0}
+.phieu-co-name{font-size:9px;color:var(--txt2);text-transform:uppercase;letter-spacing:.05em}
+.phieu-doc-name{font-size:13px;font-weight:700;color:var(--txt);margin-top:1px}
 .phieu-right{text-align:right}
-.phieu-main-ttl{font-size:18px;font-weight:700;color:var(--g)}
-.phieu-bid{font-size:11px;color:var(--txt2);font-family:monospace;margin-top:2px;letter-spacing:.04em}
+.phieu-main-ttl{font-size:16px;font-weight:700;color:var(--g)}
+.phieu-bid{font-size:11px;color:var(--txt2);font-family:monospace;margin-top:1px}
 .phieu-time{font-size:10px;color:var(--txt3);margin-top:1px}
 
-.p-sec-ttl{font-size:10px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;margin:12px 0 5px;padding-bottom:4px;border-bottom:1px solid var(--border)}
+.p-sec-ttl{font-size:9.5px;font-weight:700;color:var(--txt2);text-transform:uppercase;letter-spacing:.08em;margin:10px 0 4px;padding-bottom:3px;border-bottom:1px solid var(--border)}
 .p-rows{display:flex;flex-direction:column}
-.p-row{display:flex;padding:5px 0;border-bottom:1px dashed #f0f1f3}
+.p-row{display:flex;padding:4px 0;border-bottom:1px dashed #f0f1f3}
 .p-row:last-child{border-bottom:none}
-.p-lbl{font-size:11px;color:var(--txt2);width:150px;flex-shrink:0;padding-top:1px;font-weight:500}
-.p-val{font-size:13px;color:var(--txt);flex:1;font-weight:500;line-height:1.5}
-.xe-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:10px;font-size:11px;font-weight:600}
-.b-dong{background:#e6f1fb;color:#185FA5}
-.b-mat{background:#eaf3de;color:#3B6D11}
-.b-kho{background:#f3f4f6;color:#4b5563}
-
-.p-xe-tbl{width:100%;border-collapse:collapse;font-size:12px;margin-top:5px}
-.p-xe-tbl th{font-size:10px;font-weight:600;color:var(--txt2);padding:5px 8px;border:1px solid var(--border);background:#f8f9fb;text-align:left}
-.p-xe-tbl td{padding:6px 8px;border:1px solid var(--border);color:var(--txt)}
-
-.phieu-foot{margin-top:14px;padding-top:10px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-.phieu-foot-l{font-size:10px;color:var(--txt3)}
-.phieu-sig{font-size:10px;color:var(--txt3);text-align:right}
+.p-lbl{font-size:11px;color:var(--txt2);width:140px;flex-shrink:0;font-weight:500}
+.p-val{font-size:12.5px;color:var(--txt);flex:1;font-weight:500;line-height:1.5}
+.xe-badge{display:inline-flex;align-items:center;gap:4px;padding:2px 8px;border-radius:10px;font-size:11px;font-weight:600}
+.b-dong{background:#e6f1fb;color:#185FA5}.b-mat{background:#eaf3de;color:#3B6D11}.b-kho{background:#f3f4f6;color:#4b5563}
+.p-xe-tbl{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:4px}
+.p-xe-tbl th{font-size:10px;font-weight:600;color:var(--txt2);padding:4px 7px;border:1px solid var(--border);background:#f8f9fb;text-align:left}
+.p-xe-tbl td{padding:5px 7px;border:1px solid var(--border);color:var(--txt)}
+.phieu-foot{margin-top:12px;padding-top:9px;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
+.phieu-foot-l{font-size:9.5px;color:var(--txt3)}
+.phieu-sig{font-size:9.5px;color:var(--txt3);text-align:right}
 
 /* ACTION BUTTONS */
-.action-row{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
-.abtn{flex:1;min-width:130px;padding:11px 12px;border-radius:var(--radius-sm);font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid var(--border2);background:#fff;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:6px}
+.action-row{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap}
+.abtn{flex:1;min-width:120px;padding:10px 10px;border-radius:var(--radius-sm);font-size:12.5px;font-weight:600;cursor:pointer;transition:all .15s;border:1px solid var(--border2);background:#fff;color:var(--txt);display:flex;align-items:center;justify-content:center;gap:5px}
 .abtn:hover{background:#f8f9fb;border-color:var(--txt2)}
-.abtn.green{background:var(--g);color:#fff;border-color:var(--g)}
-.abtn.green:hover{background:var(--gd)}
-.abtn.blue{background:#185FA5;color:#fff;border-color:#185FA5}
-.abtn.blue:hover{background:#0C447C}
-.abtn.orange{background:#b45309;color:#fff;border-color:#b45309}
-.abtn.orange:hover{background:#92400e}
+.abtn.green{background:var(--g);color:#fff;border-color:var(--g)}.abtn.green:hover{background:var(--gd)}
+.abtn.blue{background:#185FA5;color:#fff;border-color:#185FA5}.abtn.blue:hover{background:#0C447C}
+.abtn.orange{background:#b45309;color:#fff;border-color:#b45309}.abtn.orange:hover{background:#92400e}
 
 /* TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--g);color:#fff;padding:10px 20px;border-radius:8px;font-size:13px;font-weight:600;transition:transform .3s ease;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.2)}
-.toast.show{transform:translateX(-50%) translateY(0)}
-.toast.err{background:#b91c1c}
-
-/* SPINNER */
-.spin{display:inline-block;width:13px;height:13px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle}
+.toast{position:fixed;bottom:22px;left:50%;transform:translateX(-50%) translateY(100px);background:var(--g);color:#fff;padding:9px 18px;border-radius:8px;font-size:13px;font-weight:600;transition:transform .3s ease;z-index:9999;pointer-events:none;white-space:nowrap;box-shadow:0 4px 12px rgba(0,0,0,.2)}
+.toast.show{transform:translateX(-50%) translateY(0)}.toast.err{background:#b91c1c}
+.spin{display:inline-block;width:12px;height:12px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:sp .6s linear infinite;vertical-align:middle}
 @keyframes sp{to{transform:rotate(360deg)}}
 
 /* HISTORY */
 .hist-wrap{overflow-x:auto}
-.hist-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:550px}
-.hist-tbl th{font-size:10px;font-weight:600;color:var(--txt2);padding:7px 10px;border-bottom:1px solid var(--border);background:#f8f9fb;text-align:left}
-.hist-tbl td{padding:7px 10px;border-bottom:1px solid #f0f1f3;color:var(--txt)}
+.hist-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:500px}
+.hist-tbl th{font-size:10px;font-weight:600;color:var(--txt2);padding:6px 9px;border-bottom:1px solid var(--border);background:#f8f9fb;text-align:left}
+.hist-tbl td{padding:6px 9px;border-bottom:1px solid #f0f1f3;color:var(--txt)}
 .hist-tbl tr:last-child td{border-bottom:none}
-.hist-empty{text-align:center;padding:20px;font-size:12px;color:var(--txt3)}
-.btype{padding:2px 8px;border-radius:10px;font-size:10px;font-weight:600}
-.bok{background:#dcfce7;color:#166534}
-.berr{background:#fee2e2;color:#991b1b}
+.hist-empty{text-align:center;padding:18px;font-size:12px;color:var(--txt3)}
+.btype{padding:2px 7px;border-radius:10px;font-size:10px;font-weight:600}
+.bok{background:#dcfce7;color:#166534}.berr{background:#fee2e2;color:#991b1b}
+
+/* CONFIG BANNER */
+.cfg-banner{background:#fff8ed;border:1px solid #fcd34d;border-radius:var(--radius-sm);padding:9px 13px;font-size:11.5px;color:#92400e;margin-bottom:10px;display:flex;align-items:center;gap:6px}
 </style>
 </head>
 <body>
@@ -188,22 +174,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="app-title">Booking Xe Giao Hàng</div>
   </div>
   <div class="header-right">
-    <a class="hbtn" href="https://docs.google.com/spreadsheets/d/1a8yH6URAHix2svN0WIaSTTr7SWksclIFYdOqY-ZBqtw/edit" target="_blank">
-      📊 Google Sheet
-    </a>
+    <a class="hbtn" href="#" id="link-sheet" target="_blank">📊 Google Sheet</a>
+    <button class="hbtn" onclick="loadSheetData(true)">🔄 Tải lại DS</button>
   </div>
 </div>
 
 <div class="tabs">
-  <div class="tab on" id="tab-form" onclick="showTab('form')"><span class="tab-ic">📋</span> Nhập thông tin</div>
-  <div class="tab" id="tab-phieu" onclick="switchToPhieu()"><span class="tab-ic">📄</span> Xem phiếu & gửi</div>
-  <div class="tab" id="tab-hist" onclick="showTab('hist')"><span class="tab-ic">🕘</span> Lịch sử booking</div>
+  <div class="tab on" id="tab-form" onclick="showTab('form')">📋 Nhập thông tin</div>
+  <div class="tab" id="tab-phieu" onclick="goPhieu()">📄 Phiếu & gửi</div>
+  <div class="tab" id="tab-hist" onclick="showTab('hist')">🕘 Lịch sử</div>
 </div>
 
 <div class="main">
 
 <!-- ===== FORM ===== -->
 <div id="view-form">
+
+<!-- Config notice -->
+<div class="cfg-banner" id="cfg-banner" style="display:none">
+  ⚙️ Chưa cấu hình URL Apps Script. <a href="#" onclick="showCfg()" style="color:#92400e;font-weight:700;margin-left:4px">Cấu hình ngay →</a>
+</div>
+
+<div class="sec" id="sec-cfg" style="display:none">
+  <div class="sec-hd">⚙️ Cấu hình kết nối Google Sheet</div>
+  <div class="g2">
+    <div class="f">
+      <label>URL Web App (Apps Script) <span class="req">*</span></label>
+      <input id="cfg-url" placeholder="https://script.google.com/macros/s/...">
+    </div>
+    <div class="f">
+      <label>Google Sheet ID <span class="req">*</span></label>
+      <input id="cfg-sid" placeholder="1a8yH6URAH...">
+    </div>
+  </div>
+  <div style="margin-top:8px">
+    <button class="bsub" style="max-width:160px;font-size:12px;padding:8px 14px" onclick="saveCfg()">💾 Lưu & kết nối</button>
+  </div>
+</div>
 
 <div class="sec">
   <div class="sec-hd"><span class="snum">1</span>Loại xe & nhiệt độ vận chuyển</div>
@@ -232,32 +239,27 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="g2">
     <div class="f">
       <label>Tên khách hàng / đơn vị nhận <span class="req">*</span></label>
-      <input id="kh" placeholder="VD: Siêu thị ABC">
+      <!-- Dropdown load từ Sheet, hoặc nhập tay nếu chưa kết nối -->
+      <select id="kh-sel" onchange="onKhChange(this)" style="display:none"></select>
+      <input id="kh" placeholder="VD: Siêu thị ABC — hoặc chọn từ danh sách">
     </div>
     <div class="f">
       <label>Mã khách hàng</label>
-      <input id="makh" placeholder="VD: KH-001">
+      <input id="makh" placeholder="Tự điền hoặc tự động theo KH">
     </div>
   </div>
-  <div class="f" style="margin-top:10px">
+  <div class="f" style="margin-top:8px">
     <label>Địa chỉ giao hàng <span class="req">*</span></label>
     <input id="dc" placeholder="Số nhà, tên đường, phường/xã, quận/huyện">
   </div>
-  <div class="g2" style="margin-top:10px">
+  <div class="g2" style="margin-top:8px">
     <div class="f">
       <label>Tỉnh / Thành phố <span class="req">*</span></label>
       <select id="tinh">
         <option value="">-- Chọn tỉnh/TP --</option>
-        <option>TP. Hồ Chí Minh</option>
-        <option>Bình Dương</option>
-        <option>Đồng Nai</option>
-        <option>Long An</option>
-        <option>Tây Ninh</option>
-        <option>Bà Rịa - Vũng Tàu</option>
-        <option>Tiền Giang</option>
-        <option>Cần Thơ</option>
-        <option>Hà Nội</option>
-        <option>Khác</option>
+        <option>TP. Hồ Chí Minh</option><option>Bình Dương</option><option>Đồng Nai</option>
+        <option>Long An</option><option>Tây Ninh</option><option>Bà Rịa - Vũng Tàu</option>
+        <option>Tiền Giang</option><option>Cần Thơ</option><option>Hà Nội</option><option>Khác</option>
       </select>
     </div>
     <div class="f">
@@ -270,54 +272,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="sec">
   <div class="sec-hd"><span class="snum">4</span>Thời gian bốc & giao hàng</div>
   <div class="g4">
-    <div class="f">
-      <label>Ngày bốc hàng <span class="req">*</span></label>
-      <input type="date" id="nboc">
-    </div>
-    <div class="f">
-      <label>Khung giờ bốc hàng <span class="req">*</span></label>
-      <select id="gboc"></select>
-    </div>
-    <div class="f">
-      <label>Ngày giao yêu cầu</label>
-      <input type="date" id="ngiao">
-    </div>
-    <div class="f">
-      <label>Khung giờ giao yêu cầu</label>
-      <select id="ggiao"></select>
-    </div>
+    <div class="f"><label>Ngày bốc hàng <span class="req">*</span></label><input type="date" id="nboc"></div>
+    <div class="f"><label>Khung giờ bốc <span class="req">*</span></label><select id="gboc"></select></div>
+    <div class="f"><label>Ngày giao yêu cầu</label><input type="date" id="ngiao"></div>
+    <div class="f"><label>Khung giờ giao</label><select id="ggiao"></select></div>
   </div>
 </div>
 
 <div class="sec">
-  <div class="sec-hd"><span class="snum">5</span>Kho bốc hàng <span style="font-size:10px;font-weight:400;color:var(--txt3);margin-left:6px">chọn 1 hoặc nhiều kho</span></div>
+  <div class="sec-hd"><span class="snum">5</span>Kho bốc hàng
+    <span style="font-size:10px;font-weight:400;color:var(--txt3);margin-left:4px">chọn 1 hoặc nhiều kho</span>
+  </div>
   <div class="kl" id="kl">
-    <div class="ki" onclick="togK(this)">
-      <div class="cb"></div>
-      <div style="flex:1"><div class="kn">Kho Trung Tâm — Nhất Lâm</div><div class="ka">123 Nguyễn Văn Linh, Q.7, TP.HCM</div></div>
-    </div>
-    <div class="ki" onclick="togK(this)">
-      <div class="cb"></div>
-      <div style="flex:1"><div class="kn">Kho Lạnh Bình Dương</div><div class="ka">KCN Sóng Thần 2, Dĩ An, Bình Dương</div></div>
-    </div>
-    <div class="ki" onclick="togK(this)">
-      <div class="cb"></div>
-      <div style="flex:1"><div class="kn">Kho Đông Lạnh Thủ Đức</div><div class="ka">18 Đường Số 12, P. Bình Chiểu, TP Thủ Đức</div></div>
-    </div>
-    <div class="ki" onclick="togK(this)">
-      <div class="cb"></div>
-      <div style="flex:1"><div class="kn">Kho Khô Long An</div><div class="ka">KCN Đức Hòa, Huyện Đức Hòa, Long An</div></div>
-    </div>
-    <div class="ki" onclick="togK(this)">
-      <div class="cb"></div>
-      <div style="flex:1"><div class="kn">Kho Cảng Cát Lái</div><div class="ka">Cảng Cát Lái, Q.2, TP.HCM</div></div>
-    </div>
+    <div class="kl-loading" id="kl-loading">⏳ Đang tải danh sách kho...</div>
   </div>
 </div>
 
 <div class="sec">
   <div class="sec-hd"><span class="snum">6</span>Yêu cầu đặc biệt</div>
-  <div style="font-size:11px;color:var(--txt2);margin-bottom:4px">Nhấn để bật / tắt yêu cầu:</div>
   <div class="tags" id="tags">
     <div class="tag on" onclick="togT(this)">Trang phục lịch sự</div>
     <div class="tag on" onclick="togT(this)">Mang giày bảo hộ</div>
@@ -327,9 +299,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div class="tag" onclick="togT(this)">Kiểm tra nhiệt độ khi nhận</div>
     <div class="tag" onclick="togT(this)">Hàng dễ vỡ</div>
     <div class="tag" onclick="togT(this)">Cần biên bản bàn giao</div>
-    <div class="tag" onclick="togT(this)">Hàng nguy hiểm / hóa chất</div>
   </div>
-  <div class="f" style="margin-top:10px">
+  <div class="f" style="margin-top:9px">
     <label>Ghi chú thêm</label>
     <textarea id="ghichu" placeholder="Yêu cầu đặc biệt khác hoặc ghi chú cho chuyến hàng..."></textarea>
   </div>
@@ -338,28 +309,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 <div class="sec">
   <div class="sec-hd">Thông tin người đặt xe</div>
   <div class="g3">
-    <div class="f">
-      <label>Họ tên <span class="req">*</span></label>
-      <input id="ten" placeholder="Nguyễn Văn A">
-    </div>
-    <div class="f">
-      <label>Bộ phận <span class="req">*</span></label>
+    <div class="f"><label>Họ tên <span class="req">*</span></label><input id="ten" placeholder="Nguyễn Văn A"></div>
+    <div class="f"><label>Bộ phận <span class="req">*</span></label>
       <select id="bp">
         <option value="">-- Chọn bộ phận --</option>
-        <option>Kho</option>
-        <option>XNK</option>
-        <option>Kinh doanh</option>
-        <option>HCNS</option>
-        <option>Kế toán</option>
-        <option>BOD</option>
-        <option>Pháp chế</option>
-        <option>IT</option>
+        <option>Kho</option><option>XNK</option><option>Kinh doanh</option>
+        <option>HCNS</option><option>Kế toán</option><option>BOD</option><option>IT</option>
       </select>
     </div>
-    <div class="f">
-      <label>Số điện thoại</label>
-      <input id="sdtdat" type="tel" placeholder="0xxx xxx xxx">
-    </div>
+    <div class="f"><label>Số điện thoại</label><input id="sdtdat" type="tel" placeholder="0xxx xxx xxx"></div>
   </div>
 </div>
 
@@ -367,26 +325,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <button class="brst" onclick="resetAll()">🔄 Làm lại</button>
   <button class="bsub" onclick="goPhieu()">Xem phiếu & gửi nhà xe →</button>
 </div>
-</div>
+</div><!-- end view-form -->
 
 <!-- ===== PHIẾU ===== -->
 <div id="view-phieu">
   <div class="back-btn" onclick="showTab('form')">← Quay lại chỉnh sửa</div>
-
   <div class="note-box">
-    Phiếu booking đã sẵn sàng.&nbsp;
-    <strong>① Copy text</strong> để paste vào Zalo/Viber gửi nhà xe &nbsp;|&nbsp;
-    <strong>② In / chụp màn hình</strong> gửi dạng ảnh &nbsp;|&nbsp;
-    <strong>③ Lưu Google Sheet</strong> để theo dõi
+    Phiếu sẵn sàng. &nbsp;
+    <strong>① Copy text</strong> paste vào Zalo/Viber gửi nhà xe &nbsp;|&nbsp;
+    <strong>② In</strong> gửi dạng ảnh &nbsp;|&nbsp;
+    <strong>③ Lưu Sheet</strong> để theo dõi
   </div>
-
   <div id="phieu-box"></div>
-
   <div class="action-row">
-    <button class="abtn" onclick="copyText()">📋 Copy text gửi Zalo</button>
-    <button class="abtn orange" onclick="printPhieu()">🖨 In / chụp màn hình</button>
+    <button class="abtn" onclick="copyText()">📋 Copy text Zalo</button>
+    <button class="abtn orange" onclick="printPhieu()">🖨 In phiếu</button>
     <button class="abtn blue" id="btn-sheet" onclick="saveSheet()">💾 Lưu Google Sheet</button>
-    <button class="abtn" onclick="newBooking()">✚ Booking mới</button>
+    <button class="abtn" onclick="showTab('form');resetAll()">✚ Booking mới</button>
   </div>
 </div>
 
@@ -399,184 +354,300 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 </div>
 
 </div><!-- end .main -->
-
 <div class="toast" id="toast"></div>
 
 <script>
-var SHEET_ID = '1a8yH6URAHix2svN0WIaSTTr7SWksclIFYdOqY-ZBqtw';
-var xeType = 'dong';
-var xeRc = 0;
-var currentBid = '';
-var bookingHistory = [];
-
-var tMap = {
-  dong: { c: 'td', l: '🌡 Duy trì nhiệt độ -18°C trong suốt hành trình' },
-  mat:  { c: 'tm', l: '🌡 Duy trì nhiệt độ +4 ~ +8°C trong suốt hành trình' },
-  kho:  { c: 'tk', l: '📦 Xe khô — nhiệt độ thường, không yêu cầu làm lạnh' }
-};
-
-// Build khung giờ dropdowns
-function buildGioOptions(selId) {
-  var sel = document.getElementById(selId);
-  var placeholder = selId === 'gboc' ? '-- Chọn khung giờ bốc --' : '-- Chọn khung giờ giao --';
-  sel.innerHTML = '<option value="">' + placeholder + '</option>';
-  for (var h = 0; h < 24; h++) {
-    var h1 = String(h).padStart(2,'0');
-    var h2 = String((h+1) % 24).padStart(2,'0');
-    var val = h1 + ':00 - ' + h2 + ':00';
-    sel.innerHTML += '<option value="' + val + '">' + val + '</option>';
+// ============================================================
+// CONFIG — LƯU TRONG localStorage
+// ============================================================
+var CFG_KEY = 'nl_booking_cfg';
+var cfg = {};
+function loadCfg() {
+  try { cfg = JSON.parse(localStorage.getItem(CFG_KEY)||'{}'); } catch(e){ cfg={}; }
+  if (cfg.sheetId) document.getElementById('link-sheet').href = 'https://docs.google.com/spreadsheets/d/' + cfg.sheetId + '/edit';
+  if (cfg.url) document.getElementById('cfg-url').value = cfg.url;
+  if (cfg.sheetId) document.getElementById('cfg-sid').value = cfg.sheetId;
+}
+function saveCfg() {
+  var url = document.getElementById('cfg-url').value.trim();
+  var sid = document.getElementById('cfg-sid').value.trim();
+  if (!url || !sid) { alert('Vui lòng nhập URL Web App và Sheet ID'); return; }
+  cfg = { url: url, sheetId: sid };
+  localStorage.setItem(CFG_KEY, JSON.stringify(cfg));
+  document.getElementById('link-sheet').href = 'https://docs.google.com/spreadsheets/d/' + sid + '/edit';
+  document.getElementById('sec-cfg').style.display = 'none';
+  document.getElementById('cfg-banner').style.display = 'none';
+  showToast('✅ Đã lưu cấu hình! Đang tải dữ liệu...', false);
+  loadSheetData(true);
+}
+function showCfg() {
+  document.getElementById('sec-cfg').style.display = 'block';
+  document.getElementById('sec-cfg').scrollIntoView({behavior:'smooth'});
+}
+function checkCfg() {
+  if (!cfg.url) {
+    document.getElementById('cfg-banner').style.display = 'flex';
   }
 }
-buildGioOptions('gboc');
-buildGioOptions('ggiao');
 
-function pad(n) { return n < 10 ? '0'+n : ''+n; }
-function genBid() {
-  var d = new Date();
-  return 'NL-' + String(d.getFullYear()).slice(2) + pad(d.getMonth()+1) + pad(d.getDate()) + '-' + Math.floor(Math.random()*9000+1000);
-}
-function fmtDate(s) {
-  if (!s) return '';
-  var p = s.split('-');
-  return p[2] + '/' + p[1] + '/' + p[0];
-}
-function nowStr() {
-  var d = new Date();
-  return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());
+// ============================================================
+// LOAD KHO & KHÁCH HÀNG TỪ GOOGLE SHEET
+// ============================================================
+var sheetKhos = [];
+var sheetKhs  = [];
+
+async function loadSheetData(force) {
+  if (!cfg.url) { renderDefaultKhos(); return; }
+  try {
+    var url = cfg.url + '?action=getData&t=' + Date.now();
+    var r = await fetch(url);
+    var d = await r.json();
+    if (d.khos && d.khos.length) {
+      sheetKhos = d.khos;
+      localStorage.setItem('nl_khos', JSON.stringify(sheetKhos));
+    }
+    if (d.khs && d.khs.length) {
+      sheetKhs = d.khs;
+      localStorage.setItem('nl_khs', JSON.stringify(sheetKhs));
+    }
+    renderKhos();
+    renderKhDropdown();
+    if (force) showToast('✅ Đã tải danh sách Kho & Khách hàng!', false);
+  } catch(e) {
+    // fallback cache
+    var kc = localStorage.getItem('nl_khos');
+    var khc = localStorage.getItem('nl_khs');
+    if (kc) { sheetKhos = JSON.parse(kc); renderKhos(); } else renderDefaultKhos();
+    if (khc) { sheetKhs = JSON.parse(khc); renderKhDropdown(); }
+    if (force) showToast('⚠ Không tải được. Dùng dữ liệu cache.', true);
+  }
 }
 
+function renderKhos() {
+  var el = document.getElementById('kl');
+  if (!sheetKhos.length) { renderDefaultKhos(); return; }
+  var html = '';
+  sheetKhos.forEach(function(k) {
+    html += '<div class="ki" onclick="togK(this)">'
+      + '<div class="cb"></div>'
+      + '<div style="flex:1"><div class="kn">'+escH(k.ten)+'</div>'
+      + (k.dia_chi?'<div class="ka">'+escH(k.dia_chi)+'</div>':'')
+      + '</div></div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderDefaultKhos() {
+  var defaults = [
+    {ten:'Kho Trung Tâm — Nhất Lâm', dia_chi:'123 Nguyễn Văn Linh, Q.7, TP.HCM'},
+    {ten:'Kho Lạnh Bình Dương', dia_chi:'KCN Sóng Thần 2, Dĩ An, Bình Dương'},
+    {ten:'Kho Đông Lạnh Thủ Đức', dia_chi:'18 Đường Số 12, P. Bình Chiểu, TP Thủ Đức'},
+    {ten:'Kho Khô Long An', dia_chi:'KCN Đức Hòa, Huyện Đức Hòa, Long An'},
+    {ten:'Kho Cảng Cát Lái', dia_chi:'Cảng Cát Lái, Q.2, TP.HCM'}
+  ];
+  sheetKhos = defaults;
+  renderKhos();
+}
+
+function renderKhDropdown() {
+  var sel = document.getElementById('kh-sel');
+  var inp = document.getElementById('kh');
+  if (!sheetKhs.length) { sel.style.display='none'; inp.style.display=''; return; }
+  var html = '<option value="">-- Chọn khách hàng --</option>';
+  sheetKhs.forEach(function(k) {
+    html += '<option value="'+escA(k.ten)+'" data-makh="'+escA(k.ma||'')+'" data-dc="'+escA(k.dia_chi||'')+'" data-tinh="'+escA(k.tinh||'')+'">'+escH(k.ten)+(k.ma?' ('+k.ma+')':'')+'</option>';
+  });
+  // Thêm option nhập tay
+  html += '<option value="__manual__">✏️ Nhập tay...</option>';
+  sel.innerHTML = html;
+  sel.style.display = '';
+  inp.style.display = 'none';
+}
+
+function onKhChange(sel) {
+  var v = sel.value;
+  var inp = document.getElementById('kh');
+  if (v === '__manual__') {
+    sel.style.display = 'none';
+    inp.style.display = '';
+    inp.value = '';
+    inp.focus();
+    document.getElementById('makh').value = '';
+    return;
+  }
+  if (!v) { document.getElementById('makh').value=''; document.getElementById('dc').value=''; return; }
+  var opt = sel.options[sel.selectedIndex];
+  inp.value = v;
+  document.getElementById('makh').value = opt.dataset.makh || '';
+  if (opt.dataset.dc) document.getElementById('dc').value = opt.dataset.dc;
+  if (opt.dataset.tinh) {
+    var ts = document.getElementById('tinh');
+    for (var i=0;i<ts.options.length;i++){
+      if (ts.options[i].value === opt.dataset.tinh){ ts.selectedIndex=i; break; }
+    }
+  }
+}
+
+function escH(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function escA(s){ return String(s||'').replace(/"/g,'&quot;'); }
+
+// ============================================================
+// STATE
+// ============================================================
+var xeType='dong', xeRc=0, currentBid='', bookingHistory=[];
+var tMap={
+  dong:{c:'td',l:'🌡 Duy trì nhiệt độ -18°C trong suốt hành trình'},
+  mat:{c:'tm',l:'🌡 Duy trì nhiệt độ +4 ~ +8°C trong suốt hành trình'},
+  kho:{c:'tk',l:'📦 Xe khô — nhiệt độ thường, không yêu cầu làm lạnh'}
+};
+
+// ============================================================
+// GIỜ DROPDOWN
+// ============================================================
+function buildGio(id) {
+  var sel = document.getElementById(id);
+  var ph = id==='gboc'?'-- Chọn khung giờ bốc --':'-- Chọn khung giờ giao --';
+  sel.innerHTML='<option value="">'+ph+'</option>';
+  for(var h=0;h<24;h++){
+    var v=h+':00 - '+((h+1)%24)+':00';
+    sel.innerHTML+='<option value="'+v+'">'+v+'</option>';
+  }
+}
+
+// ============================================================
+// TAB
+// ============================================================
 function showTab(t) {
-  ['form','phieu','hist'].forEach(function(v) {
-    document.getElementById('view-' + v).style.display = v === t ? 'block' : 'none';
-    document.getElementById('tab-' + v).classList.toggle('on', v === t);
+  ['form','phieu','hist'].forEach(function(v){
+    document.getElementById('view-'+v).style.display= v===t?'block':'none';
+    document.getElementById('tab-'+v).classList.toggle('on',v===t);
   });
 }
-function switchToPhieu() {
-  var e = validate();
-  if (e.length) { alert('Vui lòng điền đầy đủ:\n• ' + e.join('\n• ')); return; }
-  currentBid = genBid();
-  renderPhieu();
-  showTab('phieu');
-}
 
+// ============================================================
+// XE TYPE
+// ============================================================
 function selXe(el) {
   document.querySelectorAll('.xc').forEach(function(c){c.classList.remove('on')});
-  el.classList.add('on');
-  xeType = el.dataset.t;
-  var b = document.getElementById('tbadge');
-  b.className = 'temp-badge ' + tMap[xeType].c;
-  b.textContent = tMap[xeType].l;
+  el.classList.add('on'); xeType=el.dataset.t;
+  var b=document.getElementById('tbadge');
+  b.className='temp-badge '+tMap[xeType].c;
+  b.textContent=tMap[xeType].l;
 }
-function togK(el) { el.classList.toggle('on'); }
-function togT(el) { el.classList.toggle('on'); }
 
+// ============================================================
+// XE ROWS
+// ============================================================
 function addXe() {
   xeRc++;
-  var i = xeRc;
-  var d = document.createElement('div');
-  d.className = 'xe-row'; d.id = 'xr-'+i;
-  d.innerHTML =
-    '<div class="xe-rh">' +
-      '<span class="xe-rl">Xe #'+i+'</span>' +
-      (i > 1 ? '<button class="bdel" onclick="delXe('+i+')">✕ Xóa</button>' : '') +
-    '</div>' +
-    '<div class="g3">' +
-      '<div class="f"><label>Tải trọng</label>' +
-        '<select id="tt-'+i+'">' +
-          '<option value="">-- Chọn tải trọng --</option>' +
-          ['0.5 tấn','1 tấn','1.5 tấn','2 tấn','2.5 tấn','3.5 tấn','5 tấn','7 tấn','10 tấn','15 tấn']
-            .map(function(v){return '<option>'+v+'</option>'}).join('') +
-        '</select>' +
-      '</div>' +
-      '<div class="f"><label>Khối lượng hàng (kg)</label>' +
-        '<input type="number" id="kl-'+i+'" placeholder="VD: 800">' +
-      '</div>' +
-      '<div class="f"><label>Ghi chú xe</label>' +
-        '<input id="gcxe-'+i+'" placeholder="Biển số, yêu cầu riêng...">' +
-      '</div>' +
-    '</div>';
+  var i=xeRc, d=document.createElement('div');
+  d.className='xe-row'; d.id='xr-'+i;
+  d.innerHTML='<div class="xe-rh"><span class="xe-rl">Xe #'+i+'</span>'+(i>1?'<button class="bdel" onclick="delXe('+i+')">✕ Xóa</button>':'')+' </div>'
+    +'<div class="g3">'
+    +'<div class="f"><label>Tải trọng</label><select id="tt-'+i+'"><option value="">-- Chọn tải trọng --</option>'
+    +['0.5 tấn','1 tấn','1.5 tấn','2 tấn','2.5 tấn','3.5 tấn','5 tấn','7 tấn','10 tấn','15 tấn'].map(function(v){return'<option>'+v+'</option>'}).join('')
+    +'</select></div>'
+    +'<div class="f"><label>Khối lượng hàng (kg)</label><input type="number" id="kl-'+i+'" placeholder="VD: 800"></div>'
+    +'<div class="f"><label>Ghi chú xe</label><input id="gcxe-'+i+'" placeholder="Biển số, yêu cầu..."></div>'
+    +'</div>';
   document.getElementById('xe-rows').appendChild(d);
   renumberXe();
 }
-function delXe(i) {
-  var r = document.getElementById('xr-'+i);
-  if (r) r.remove();
-  renumberXe();
-}
-function renumberXe() {
-  document.querySelectorAll('.xe-row').forEach(function(r, i){
-    var l = r.querySelector('.xe-rl');
-    if (l) l.textContent = 'Xe #' + (i+1);
+function delXe(i){ var r=document.getElementById('xr-'+i); if(r)r.remove(); renumberXe(); }
+function renumberXe(){
+  document.querySelectorAll('.xe-row').forEach(function(r,i){
+    var l=r.querySelector('.xe-rl'); if(l)l.textContent='Xe #'+(i+1);
   });
 }
-function getXes() {
-  var rows = document.querySelectorAll('.xe-row'), arr = [];
-  rows.forEach(function(r) {
-    var id = r.id.replace('xr-','');
+function getXes(){
+  var rows=document.querySelectorAll('.xe-row'),arr=[];
+  rows.forEach(function(r){
+    var id=r.id.replace('xr-','');
     arr.push({
-      tt: (document.getElementById('tt-'+id)||{}).value||'',
-      kl: (document.getElementById('kl-'+id)||{}).value||'',
-      gc: (document.getElementById('gcxe-'+id)||{}).value||''
+      tt:(document.getElementById('tt-'+id)||{}).value||'',
+      kl:(document.getElementById('kl-'+id)||{}).value||'',
+      gc:(document.getElementById('gcxe-'+id)||{}).value||''
     });
   });
   return arr;
 }
 
-function validate() {
-  var e = [];
-  var xes = getXes();
-  if (!xes.length) e.push('Chưa có xe nào trong danh sách');
-  else if (xes.some(function(x){return !x.tt;})) e.push('Tải trọng cho một hoặc nhiều xe chưa chọn');
-  if (!document.getElementById('kh').value.trim()) e.push('Tên khách hàng / đơn vị nhận');
-  if (!document.getElementById('dc').value.trim()) e.push('Địa chỉ giao hàng');
-  if (!document.getElementById('tinh').value) e.push('Tỉnh / Thành phố');
-  if (!document.getElementById('nboc').value) e.push('Ngày bốc hàng');
-  if (!document.getElementById('gboc').value) e.push('Khung giờ bốc hàng');
-  if (!document.querySelectorAll('.ki.on').length) e.push('Kho bốc hàng');
-  if (!document.getElementById('ten').value.trim()) e.push('Họ tên người đặt');
-  if (!document.getElementById('bp').value) e.push('Bộ phận người đặt');
+// ============================================================
+// KHO / TAG TOGGLE
+// ============================================================
+function togK(el){el.classList.toggle('on');}
+function togT(el){el.classList.toggle('on');}
+
+// ============================================================
+// VALIDATE
+// ============================================================
+function getKhVal(){
+  var sel=document.getElementById('kh-sel');
+  var inp=document.getElementById('kh');
+  if(sel.style.display!=='none' && sel.value && sel.value!=='__manual__') return sel.value;
+  return inp.value.trim();
+}
+function validate(){
+  var e=[];
+  var xes=getXes();
+  if(!xes.length) e.push('Chưa có xe nào');
+  else if(xes.some(function(x){return!x.tt;})) e.push('Tải trọng xe chưa chọn');
+  if(!getKhVal()) e.push('Tên khách hàng / đơn vị nhận');
+  if(!document.getElementById('dc').value.trim()) e.push('Địa chỉ giao hàng');
+  if(!document.getElementById('tinh').value) e.push('Tỉnh / Thành phố');
+  if(!document.getElementById('nboc').value) e.push('Ngày bốc hàng');
+  if(!document.getElementById('gboc').value) e.push('Khung giờ bốc hàng');
+  if(!document.querySelectorAll('.ki.on').length) e.push('Kho bốc hàng');
+  if(!document.getElementById('ten').value.trim()) e.push('Họ tên người đặt');
+  if(!document.getElementById('bp').value) e.push('Bộ phận người đặt');
   return e;
 }
 
-function goPhieu() {
-  var e = validate();
-  if (e.length) { alert('Vui lòng điền đầy đủ:\n• ' + e.join('\n• ')); return; }
-  currentBid = genBid();
+// ============================================================
+// PHIẾU RENDER
+// ============================================================
+function pad(n){return n<10?'0'+n:''+n;}
+function genBid(){var d=new Date();return 'NL-'+String(d.getFullYear()).slice(2)+pad(d.getMonth()+1)+pad(d.getDate())+'-'+Math.floor(Math.random()*9000+1000);}
+function fmtDate(s){if(!s)return'';var p=s.split('-');return p[2]+'/'+p[1]+'/'+p[0];}
+function nowStr(){var d=new Date();return pad(d.getDate())+'/'+pad(d.getMonth()+1)+'/'+d.getFullYear()+' '+pad(d.getHours())+':'+pad(d.getMinutes());}
+
+function goPhieu(){
+  var e=validate();
+  if(e.length){alert('Vui lòng điền đầy đủ:\n• '+e.join('\n• '));return;}
+  currentBid=genBid();
   renderPhieu();
   showTab('phieu');
 }
 
-function renderPhieu() {
-  var xes = getXes();
-  var khos = []; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
-  var tags = []; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
-  var xeN = document.querySelector('.xc.on .xn').textContent;
-  var xeT = document.querySelector('.xc.on .xt').textContent;
-  var xeBcls = xeType==='dong'?'b-dong':xeType==='mat'?'b-mat':'b-kho';
-  var gboc = document.getElementById('gboc').value;
-  var ggiao = document.getElementById('ggiao').value;
+function renderPhieu(){
+  var xes=getXes();
+  var khos=[]; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
+  var tags=[]; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
+  var xeN=document.querySelector('.xc.on .xn').textContent;
+  var xeT=document.querySelector('.xc.on .xt').textContent;
+  var xeBcls=xeType==='dong'?'b-dong':xeType==='mat'?'b-mat':'b-kho';
+  var gboc=document.getElementById('gboc').value;
+  var ggiao=document.getElementById('ggiao').value;
+  var khVal=getKhVal();
+  var makh=document.getElementById('makh').value;
 
-  var xeTrs = '';
+  var xeTrs='';
   xes.forEach(function(x,i){
-    xeTrs += '<tr><td style="text-align:center;font-weight:700">'+(i+1)+'</td><td>'+x.tt+'</td><td>'+(x.kl?x.kl+' kg':'—')+'</td><td>'+(x.gc||'—')+'</td></tr>';
+    xeTrs+='<tr><td style="text-align:center;font-weight:700">'+(i+1)+'</td><td>'+x.tt+'</td><td>'+(x.kl?x.kl+' kg':'—')+'</td><td>'+(x.gc||'—')+'</td></tr>';
   });
 
-  var html = '<div class="phieu" id="phieu-print">'
+  var html='<div class="phieu" id="phieu-print">'
     +'<div class="phieu-hdr">'
-    +  '<div style="display:flex;align-items:center;gap:10px">'
-    +    '<div class="phieu-lb">NL</div>'
-    +    '<div><div class="phieu-co-name">Công ty TNHH TM & XNK Nhất Lâm</div><div class="phieu-doc-name">Phiếu yêu cầu xe giao hàng</div></div>'
-    +  '</div>'
-    +  '<div class="phieu-right">'
-    +    '<div class="phieu-main-ttl">BOOKING XE</div>'
-    +    '<div class="phieu-bid">'+currentBid+'</div>'
-    +    '<div class="phieu-time">'+nowStr()+'</div>'
-    +  '</div>'
+    +'<div style="display:flex;align-items:center;gap:9px">'
+    +'<div class="phieu-lb">NL</div>'
+    +'<div><div class="phieu-co-name">Công ty TNHH TM & XNK Nhất Lâm</div><div class="phieu-doc-name">Phiếu yêu cầu xe giao hàng</div></div>'
+    +'</div>'
+    +'<div class="phieu-right"><div class="phieu-main-ttl">BOOKING XE</div><div class="phieu-bid">'+currentBid+'</div><div class="phieu-time">'+nowStr()+'</div></div>'
     +'</div>'
 
     +'<div class="p-sec-ttl">Thông tin xe</div>'
     +'<div class="p-rows">'
-    +'<div class="p-row"><span class="p-lbl">Loại xe</span><span class="p-val"><span class="xe-badge '+xeBcls+'">'+xeN+'</span> &nbsp;<span style="font-size:11px;color:var(--txt2)">'+xeT+'</span></span></div>'
+    +'<div class="p-row"><span class="p-lbl">Loại xe</span><span class="p-val"><span class="xe-badge '+xeBcls+'">'+xeN+'</span> <span style="font-size:11px;color:var(--txt2)">'+xeT+'</span></span></div>'
     +'<div class="p-row"><span class="p-lbl">Số lượng xe</span><span class="p-val">'+xes.length+' xe</span></div>'
     +'</div>'
     +'<table class="p-xe-tbl"><thead><tr><th>#</th><th>Tải trọng</th><th>Khối lượng</th><th>Ghi chú xe</th></tr></thead><tbody>'+xeTrs+'</tbody></table>'
@@ -590,7 +661,7 @@ function renderPhieu() {
 
     +'<div class="p-sec-ttl">Điểm giao hàng</div>'
     +'<div class="p-rows">'
-    +'<div class="p-row"><span class="p-lbl">Khách hàng</span><span class="p-val">'+document.getElementById('kh').value+(document.getElementById('makh').value?' <span style="font-size:11px;color:var(--txt2)">('+document.getElementById('makh').value+')</span>':'')+'</span></div>'
+    +'<div class="p-row"><span class="p-lbl">Khách hàng</span><span class="p-val">'+khVal+(makh?' <span style="font-size:11px;color:var(--txt2)">('+makh+')</span>':'')+'</span></div>'
     +'<div class="p-row"><span class="p-lbl">Địa chỉ</span><span class="p-val">'+document.getElementById('dc').value+', '+document.getElementById('tinh').value+'</span></div>'
     +(document.getElementById('sdtgiao').value?'<div class="p-row"><span class="p-lbl">SĐT liên hệ</span><span class="p-val">'+document.getElementById('sdtgiao').value+'</span></div>':'')
     +(document.getElementById('ngiao').value?'<div class="p-row"><span class="p-lbl">Ngày giao yêu cầu</span><span class="p-val">'+fmtDate(document.getElementById('ngiao').value)+'</span></div>':'')
@@ -599,7 +670,7 @@ function renderPhieu() {
 
     +'<div class="p-sec-ttl">Yêu cầu đặc biệt</div>'
     +'<div class="p-rows">'
-    +'<div class="p-row"><span class="p-lbl">Yêu cầu</span><span class="p-val" style="font-size:12px;color:var(--txt)">'+tags.join(' · ')+'</span></div>'
+    +'<div class="p-row"><span class="p-lbl">Yêu cầu</span><span class="p-val" style="font-size:12px">'+tags.join(' · ')+'</span></div>'
     +(document.getElementById('ghichu').value?'<div class="p-row"><span class="p-lbl">Ghi chú</span><span class="p-val">'+document.getElementById('ghichu').value+'</span></div>':'')
     +'</div>'
 
@@ -610,103 +681,102 @@ function renderPhieu() {
     +'</div>'
 
     +'<div class="phieu-foot">'
-    +  '<div class="phieu-foot-l">'+currentBid+' · Công ty TNHH TM & XNK Nhất Lâm</div>'
-    +  '<div class="phieu-sig">Người đặt: '+document.getElementById('ten').value+'</div>'
-    +'</div>'
-    +'</div>';
+    +'<div class="phieu-foot-l">'+currentBid+' · Nhất Lâm</div>'
+    +'<div class="phieu-sig">Người đặt: '+document.getElementById('ten').value+'</div>'
+    +'</div></div>';
 
-  document.getElementById('phieu-box').innerHTML = html;
+  document.getElementById('phieu-box').innerHTML=html;
 }
 
-function buildCopyText() {
-  var xes = getXes();
-  var khos = []; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
-  var tags = []; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
-  var xeN = document.querySelector('.xc.on .xn').textContent;
-  var xeT = document.querySelector('.xc.on .xt').textContent;
-  var lines = [
+// ============================================================
+// COPY TEXT
+// ============================================================
+function buildCopyText(){
+  var xes=getXes();
+  var khos=[]; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
+  var tags=[]; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
+  var xeN=document.querySelector('.xc.on .xn').textContent;
+  var xeT=document.querySelector('.xc.on .xt').textContent;
+  var khVal=getKhVal();
+  var lines=[
     '============================',
     '  PHIẾU BOOKING XE — NHẤT LÂM',
     '============================',
-    'Mã booking : ' + currentBid,
-    'Thời gian  : ' + nowStr(),
+    'Mã booking : '+currentBid,
+    'Thời gian  : '+nowStr(),
     '',
     '--- THÔNG TIN XE ---',
-    'Loại xe    : ' + xeN + ' (' + xeT + ')',
-    'Số lượng   : ' + xes.length + ' xe',
-    ''
+    'Loại xe    : '+xeN+' ('+xeT+')',
+    'Số lượng   : '+xes.length+' xe',''
   ];
   xes.forEach(function(x,i){
-    lines.push('  Xe ' + (i+1) + ': ' + x.tt + (x.kl?' — '+x.kl+' kg':'') + (x.gc?' — '+x.gc:''));
+    lines.push('  Xe '+(i+1)+': '+x.tt+(x.kl?' — '+x.kl+' kg':'')+(x.gc?' — '+x.gc:''));
   });
-  lines.push('');
-  lines.push('--- ĐIỂM BỐC HÀNG ---');
-  khos.forEach(function(k){lines.push('  ' + k);});
-  lines.push('Ngày bốc   : ' + fmtDate(document.getElementById('nboc').value));
-  lines.push('Khung giờ  : ' + document.getElementById('gboc').value);
-  lines.push('');
-  lines.push('--- ĐIỂM GIAO HÀNG ---');
-  lines.push('Khách hàng : ' + document.getElementById('kh').value + (document.getElementById('makh').value?' ('+document.getElementById('makh').value+')':''));
-  lines.push('Địa chỉ    : ' + document.getElementById('dc').value + ', ' + document.getElementById('tinh').value);
-  if (document.getElementById('sdtgiao').value) lines.push('SĐT giao   : ' + document.getElementById('sdtgiao').value);
-  if (document.getElementById('ngiao').value) lines.push('Ngày giao  : ' + fmtDate(document.getElementById('ngiao').value));
-  if (document.getElementById('ggiao').value) lines.push('Khung giờ  : ' + document.getElementById('ggiao').value);
-  lines.push('');
-  lines.push('--- YÊU CẦU ĐẶC BIỆT ---');
+  lines.push('','--- ĐIỂM BỐC HÀNG ---');
+  khos.forEach(function(k){lines.push('  '+k);});
+  lines.push('Ngày bốc   : '+fmtDate(document.getElementById('nboc').value));
+  lines.push('Khung giờ  : '+document.getElementById('gboc').value);
+  lines.push('','--- ĐIỂM GIAO HÀNG ---');
+  lines.push('Khách hàng : '+khVal+(document.getElementById('makh').value?' ('+document.getElementById('makh').value+')':''));
+  lines.push('Địa chỉ    : '+document.getElementById('dc').value+', '+document.getElementById('tinh').value);
+  if(document.getElementById('sdtgiao').value) lines.push('SĐT giao   : '+document.getElementById('sdtgiao').value);
+  if(document.getElementById('ngiao').value) lines.push('Ngày giao  : '+fmtDate(document.getElementById('ngiao').value));
+  if(document.getElementById('ggiao').value) lines.push('Khung giờ  : '+document.getElementById('ggiao').value);
+  lines.push('','--- YÊU CẦU ĐẶC BIỆT ---');
   lines.push(tags.join(' · '));
-  if (document.getElementById('ghichu').value) lines.push('Ghi chú    : ' + document.getElementById('ghichu').value);
-  lines.push('');
-  lines.push('--- NGƯỜI ĐẶT ---');
-  lines.push(document.getElementById('ten').value + ' — ' + document.getElementById('bp').value + (document.getElementById('sdtdat').value?' — '+document.getElementById('sdtdat').value:''));
+  if(document.getElementById('ghichu').value) lines.push('Ghi chú    : '+document.getElementById('ghichu').value);
+  lines.push('','--- NGƯỜI ĐẶT ---');
+  lines.push(document.getElementById('ten').value+' — '+document.getElementById('bp').value+(document.getElementById('sdtdat').value?' — '+document.getElementById('sdtdat').value:''));
   lines.push('============================');
   return lines.join('\n');
 }
-
-function copyText() {
-  var txt = buildCopyText();
-  if (navigator.clipboard) {
-    navigator.clipboard.writeText(txt).then(function(){ showToast('✅ Đã copy! Paste vào Zalo/Viber gửi nhà xe.', false); }).catch(function(){ fallbackCopy(txt); });
-  } else { fallbackCopy(txt); }
+function copyText(){
+  var txt=buildCopyText();
+  if(navigator.clipboard){
+    navigator.clipboard.writeText(txt).then(function(){showToast('✅ Đã copy! Paste vào Zalo/Viber gửi nhà xe.',false);}).catch(function(){fbCopy(txt);});
+  } else fbCopy(txt);
 }
-function fallbackCopy(txt) {
-  var ta = document.createElement('textarea');
-  ta.value = txt; ta.style.position='absolute'; ta.style.left='-9999px';
+function fbCopy(txt){
+  var ta=document.createElement('textarea');
+  ta.value=txt; ta.style.position='absolute'; ta.style.left='-9999px';
   document.body.appendChild(ta); ta.select();
-  try { document.execCommand('copy'); showToast('✅ Đã copy! Paste vào Zalo/Viber gửi nhà xe.', false); }
-  catch(e) { showToast('⚠ Không copy được. Hãy dùng nút In / chụp màn hình.', true); }
+  try{document.execCommand('copy');showToast('✅ Đã copy!',false);}catch(e){showToast('⚠ Không copy được.',true);}
   document.body.removeChild(ta);
 }
-
-function printPhieu() {
-  var content = document.getElementById('phieu-print');
-  if (!content) return;
-  var w = window.open('', '_blank', 'width=700,height=900');
-  w.document.write('<html><head><title>Booking ' + currentBid + '</title>');
+function printPhieu(){
+  var content=document.getElementById('phieu-print');
+  if(!content)return;
+  var w=window.open('','_blank','width=700,height=900');
+  w.document.write('<html><head><title>Booking '+currentBid+'</title>');
   w.document.write('<style>body{font-family:Arial,sans-serif;padding:20px;font-size:13px}');
   w.document.write(document.querySelector('style').textContent);
   w.document.write('</style></head><body>');
   w.document.write(content.outerHTML);
   w.document.write('</body></html>');
   w.document.close();
-  setTimeout(function(){ w.print(); }, 500);
+  setTimeout(function(){w.print();},500);
 }
 
-async function saveSheet() {
-  var btn = document.getElementById('btn-sheet');
-  btn.innerHTML = '<span class="spin"></span> Đang lưu...';
-  btn.disabled = true;
+// ============================================================
+// SAVE SHEET
+// ============================================================
+async function saveSheet(){
+  if(!cfg.url){showToast('⚠ Chưa cấu hình URL Apps Script. Mở ⚙️ cấu hình.',true);showCfg();return;}
+  var btn=document.getElementById('btn-sheet');
+  btn.innerHTML='<span class="spin"></span> Đang lưu...';
+  btn.disabled=true;
+  var xes=getXes();
+  var khos=[]; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
+  var tags=[]; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
+  var xeN=document.querySelector('.xc.on .xn').textContent;
+  var xeT=document.querySelector('.xc.on .xt').textContent;
+  var khVal=getKhVal();
 
-  var xes = getXes();
-  var khos = []; document.querySelectorAll('.ki.on .kn').forEach(function(k){khos.push(k.textContent);});
-  var tags = []; document.querySelectorAll('.tag.on').forEach(function(t){tags.push(t.textContent);});
-  var xeN = document.querySelector('.xc.on .xn').textContent;
-  var xeT = document.querySelector('.xc.on .xt').textContent;
-
-  var rows = xes.map(function(x,i){
+  var rows=xes.map(function(x,i){
     return [
       currentBid, nowStr(), i+1, xes.length,
       xeN, xeT, x.tt, x.kl, x.gc,
-      document.getElementById('kh').value, document.getElementById('makh').value,
+      khVal, document.getElementById('makh').value,
       document.getElementById('dc').value, document.getElementById('tinh').value,
       document.getElementById('sdtgiao').value,
       fmtDate(document.getElementById('nboc').value), document.getElementById('gboc').value,
@@ -715,54 +785,38 @@ async function saveSheet() {
       document.getElementById('ghichu').value,
       document.getElementById('ten').value, document.getElementById('bp').value,
       document.getElementById('sdtdat').value
-    ].map(function(c){return '"'+String(c||'').replace(/"/g,'""')+'"';}).join(',');
+    ];
   });
 
-  var hdr = '"Mã Booking","Thời gian đặt","Xe số","Tổng xe","Loại xe","Nhiệt độ","Tải trọng","Khối lượng(kg)","Ghi chú xe","Khách hàng","Mã KH","Địa chỉ","Tỉnh/TP","SĐT giao","Ngày bốc","Giờ bốc","Ngày giao","Giờ giao","Kho bốc","Yêu cầu","Ghi chú","Người đặt","Bộ phận","SĐT người đặt"';
-  var csv = hdr + '\n' + rows.join('\n');
-
   try {
-    var r = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 500,
-        mcp_servers: [{ type: 'url', url: 'https://drivemcp.googleapis.com/mcp/v1', name: 'gdrive' }],
-        system: 'You are a Google Sheets assistant. Append the CSV rows to spreadsheet ID ' + SHEET_ID + '. Use MCP tools. Reply only OK or ERROR.',
-        messages: [{ role: 'user', content: 'Append to spreadsheet ' + SHEET_ID + ' sheet "Trang tính1", add header if empty:\n\n' + csv }]
-      })
+    var r=await fetch(cfg.url, {
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({action:'saveBooking', sheetId:cfg.sheetId, rows:rows})
     });
-    var data = await r.json();
-    var txt = (data.content||[]).filter(function(b){return b.type==='text';}).map(function(b){return b.text;}).join('');
-    if (txt.toLowerCase().includes('error')) throw new Error(txt);
-
-    bookingHistory.unshift({
-      bid: currentBid, time: nowStr(),
-      kh: document.getElementById('kh').value,
-      loai: xeN, so: xes.length, status: 'ok'
-    });
-    showToast('✅ Đã lưu vào Google Sheet thành công!', false);
+    var d=await r.json();
+    if(d.status==='ok'){
+      bookingHistory.unshift({bid:currentBid,time:nowStr(),kh:khVal,loai:xeN,so:xes.length,status:'ok'});
+      showToast('✅ Đã lưu vào Google Sheet!',false);
+    } else throw new Error(d.message||'Error');
   } catch(e) {
-    bookingHistory.unshift({
-      bid: currentBid, time: nowStr(),
-      kh: document.getElementById('kh').value,
-      loai: xeN, so: xes.length, status: 'err'
-    });
-    showToast('⚠ Lưu Sheet thất bại. Kiểm tra kết nối.', true);
+    bookingHistory.unshift({bid:currentBid,time:nowStr(),kh:khVal,loai:xeN,so:xes.length,status:'err'});
+    showToast('⚠ Lưu Sheet thất bại: '+e.message,true);
   }
-
   renderHistory();
-  btn.innerHTML = '💾 Lưu Google Sheet';
-  btn.disabled = false;
+  btn.innerHTML='💾 Lưu Google Sheet';
+  btn.disabled=false;
 }
 
-function renderHistory() {
-  var el = document.getElementById('hist-content');
-  if (!bookingHistory.length) { el.innerHTML = '<div class="hist-empty">Chưa có booking nào.</div>'; return; }
-  var html = '<div class="hist-wrap"><table class="hist-tbl"><thead><tr><th>Mã booking</th><th>Thời gian</th><th>Khách hàng</th><th>Loại xe</th><th>Số xe</th><th>Sheet</th></tr></thead><tbody>';
+// ============================================================
+// HISTORY
+// ============================================================
+function renderHistory(){
+  var el=document.getElementById('hist-content');
+  if(!bookingHistory.length){el.innerHTML='<div class="hist-empty">Chưa có booking nào.</div>';return;}
+  var html='<div class="hist-wrap"><table class="hist-tbl"><thead><tr><th>Mã booking</th><th>Thời gian</th><th>Khách hàng</th><th>Loại xe</th><th>Số xe</th><th>Sheet</th></tr></thead><tbody>';
   bookingHistory.forEach(function(h){
-    html += '<tr>'
+    html+='<tr>'
       +'<td style="font-family:monospace;font-size:11px">'+h.bid+'</td>'
       +'<td>'+h.time+'</td>'
       +'<td>'+h.kh+'</td>'
@@ -771,29 +825,35 @@ function renderHistory() {
       +'<td><span class="btype '+(h.status==='ok'?'bok':'berr')+'">'+(h.status==='ok'?'Đã lưu':'Lỗi')+'</span></td>'
       +'</tr>';
   });
-  html += '</tbody></table></div>';
-  el.innerHTML = html;
+  html+='</tbody></table></div>';
+  el.innerHTML=html;
 }
 
-function showToast(msg, err) {
-  var t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'toast show' + (err ? ' err' : '');
-  setTimeout(function(){ t.classList.remove('show'); }, 3500);
+// ============================================================
+// TOAST
+// ============================================================
+function showToast(msg,err){
+  var t=document.getElementById('toast');
+  t.textContent=msg;
+  t.className='toast show'+(err?' err':'');
+  setTimeout(function(){t.classList.remove('show');},3500);
 }
 
-function newBooking() { showTab('form'); }
-
-function resetAll() {
+// ============================================================
+// RESET
+// ============================================================
+function resetAll(){
   document.querySelectorAll('#xe-rows .xe-row').forEach(function(r){r.remove();});
-  xeRc = 0; addXe();
+  xeRc=0; addXe();
   ['kh','makh','dc','sdtgiao','ngiao','ghichu','ten','sdtdat'].forEach(function(id){
-    var el = document.getElementById(id); if(el) el.value='';
+    var el=document.getElementById(id); if(el)el.value='';
   });
+  var sel=document.getElementById('kh-sel');
+  if(sel.style.display!=='none') sel.selectedIndex=0;
   ['tinh','bp','gboc','ggiao'].forEach(function(id){
-    var el = document.getElementById(id); if(el) el.selectedIndex=0;
+    var el=document.getElementById(id); if(el)el.selectedIndex=0;
   });
-  document.getElementById('nboc').valueAsDate = new Date();
+  document.getElementById('nboc').valueAsDate=new Date();
   document.querySelectorAll('.ki').forEach(function(k){k.classList.remove('on');});
   document.querySelectorAll('.tag').forEach(function(t,i){t.classList.toggle('on',i<2);});
   document.querySelectorAll('.xc').forEach(function(c,i){c.classList.toggle('on',i===0);});
@@ -803,9 +863,15 @@ function resetAll() {
   b.textContent=tMap.dong.l;
 }
 
-// Init
-document.getElementById('nboc').valueAsDate = new Date();
+// ============================================================
+// INIT
+// ============================================================
+buildGio('gboc'); buildGio('ggiao');
+document.getElementById('nboc').valueAsDate=new Date();
 addXe();
+loadCfg();
+checkCfg();
+loadSheetData(false);
 </script>
 </body>
 </html>
