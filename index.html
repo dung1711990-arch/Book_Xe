@@ -165,7 +165,43 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .status-dot{display:inline-block;width:7px;height:7px;border-radius:50%;margin-right:4px}
 .dot-ok{background:#16a34a}.dot-err{background:#dc2626}.dot-load{background:#f59e0b}
 
-/* HISTORY */
+/* ===== QUẢN LÝ ===== */
+.ql-count{background:var(--info-bg);color:var(--info);font-size:10px;font-weight:700;padding:1px 7px;border-radius:20px}
+.ql-add-btn{background:var(--g);color:#fff;border:none;padding:5px 12px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;transition:background .15s;white-space:nowrap}
+.ql-add-btn:hover{background:var(--gd)}
+
+.ql-list{display:flex;flex-direction:column;gap:4px}
+.ql-item{display:flex;align-items:center;gap:8px;padding:8px 10px;border:1px solid var(--border);border-radius:var(--rs);background:#fafbfc;transition:border-color .15s}
+.ql-item:hover{border-color:var(--border2)}
+.ql-item-info{flex:1;min-width:0}
+.ql-item-name{font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ql-item-sub{font-size:11px;color:var(--txt2);margin-top:1px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ql-item-badge{font-size:10px;color:var(--txt3);background:#f3f4f6;padding:1px 6px;border-radius:8px;flex-shrink:0;white-space:nowrap}
+.ql-actions{display:flex;gap:4px;flex-shrink:0}
+.ql-btn{background:none;border:1px solid var(--border2);color:var(--txt2);padding:4px 9px;border-radius:5px;font-size:11px;font-weight:500;cursor:pointer;transition:all .15s;white-space:nowrap}
+.ql-btn:hover{background:#f8f9fb;border-color:var(--txt2)}
+.ql-btn.del:hover{background:#fee2e2;border-color:#fca5a5;color:#b91c1c}
+.ql-save-row{display:flex;justify-content:flex-end;margin-top:8px}
+.ql-save-btn{background:var(--info);color:#fff;border:none;padding:8px 18px;border-radius:var(--rs);font-size:13px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:6px;transition:background .15s}
+.ql-save-btn:hover{background:#0C447C}
+.ql-empty{text-align:center;padding:16px;font-size:12px;color:var(--txt3)}
+
+/* SAVE BAR */
+.save-bar{background:#fff8ed;border:1px solid #fcd34d;border-radius:var(--rs);padding:8px 12px;display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;gap:8px}
+.save-bar.hidden{display:none}
+.save-bar-msg{font-size:12px;color:#92400e}
+.save-bar-btn{background:#b45309;color:#fff;border:none;padding:6px 14px;border-radius:var(--rs);font-size:12px;font-weight:600;cursor:pointer;white-space:nowrap;transition:background .15s;display:flex;align-items:center;gap:5px}
+.save-bar-btn:hover{background:#92400e}
+
+/* MODAL */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:1000;display:flex;align-items:center;justify-content:center;padding:16px}
+.modal-box{background:#fff;border-radius:var(--r);width:100%;max-width:480px;box-shadow:0 8px 32px rgba(0,0,0,.18);overflow:hidden}
+.modal-hd{background:var(--g);color:#fff;padding:12px 16px;display:flex;align-items:center;justify-content:space-between;font-size:14px;font-weight:600}
+.modal-close{background:none;border:none;color:rgba(255,255,255,.8);font-size:20px;cursor:pointer;line-height:1;padding:0 4px}
+.modal-close:hover{color:#fff}
+.modal-body{padding:16px;display:flex;flex-direction:column;gap:10px}
+.modal-foot{padding:12px 16px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:8px}
+
 .hist-wrap{overflow-x:auto}
 .hist-tbl{width:100%;border-collapse:collapse;font-size:12px;min-width:460px}
 .hist-tbl th{font-size:10px;font-weight:600;color:var(--txt2);padding:6px 8px;border-bottom:1px solid var(--border);background:#f8f9fb;text-align:left}
@@ -198,6 +234,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <div class="tab on" id="tab-form" onclick="showTab('form')">📋 Nhập booking</div>
   <div class="tab" id="tab-phieu" onclick="goPhieu()">📄 Phiếu & gửi</div>
   <div class="tab" id="tab-hist" onclick="showTab('hist')">🕘 Lịch sử</div>
+  <div class="tab" id="tab-ql" onclick="showTab('ql')">⚙️ Quản lý</div>
 </div>
 
 <div class="main">
@@ -351,6 +388,51 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
     <div id="hist-content"><div class="hist-empty">Chưa có booking nào.</div></div>
   </div>
 </div>
+
+<!-- ===== QUẢN LÝ DỮ LIỆU ===== -->
+<div id="view-ql" style="display:none">
+
+  <!-- KHÁCH HÀNG -->
+  <div class="sec">
+    <div class="sec-hd" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:5px">🏢 Danh sách Khách hàng <span id="kh-count" class="ql-count">0</span></span>
+      <button class="ql-add-btn" onclick="openModal('kh')">+ Thêm KH</button>
+    </div>
+    <div id="kh-list" class="ql-list"></div>
+  </div>
+
+  <!-- KHO BỐC HÀNG -->
+  <div class="sec">
+    <div class="sec-hd" style="justify-content:space-between">
+      <span style="display:flex;align-items:center;gap:5px">📦 Danh sách Kho bốc hàng <span id="kho-count" class="ql-count">0</span></span>
+      <button class="ql-add-btn" onclick="openModal('kho')">+ Thêm kho</button>
+    </div>
+    <div id="kho-list" class="ql-list"></div>
+  </div>
+
+  <div class="sec" style="background:#fffbeb;border-color:#fcd34d">
+    <div style="font-size:11px;color:#92400e;line-height:1.7">
+      💡 <strong>Lưu ý:</strong> Thêm / sửa / xóa xong nhấn <strong>💾 Lưu lên Sheet</strong> để đồng bộ Google Sheet.<br>
+      Dữ liệu sẽ được tải lại tự động trên tab Nhập booking.
+    </div>
+  </div>
+</div>
+
+<!-- MODAL THÊM / SỬA -->
+<div id="modal-overlay" class="modal-overlay" onclick="closeModal(event)" style="display:none">
+  <div class="modal-box" onclick="event.stopPropagation()">
+    <div class="modal-hd">
+      <span id="modal-title">Thêm Khách hàng</span>
+      <button class="modal-close" onclick="closeModal()">×</button>
+    </div>
+    <div class="modal-body" id="modal-body"></div>
+    <div class="modal-foot">
+      <button class="brst" onclick="closeModal()">Hủy</button>
+      <button class="bsub" style="max-width:140px;font-size:13px" onclick="saveModalItem()">💾 Lưu</button>
+    </div>
+  </div>
+</div>
+
 </div>
 
 <div class="toast" id="toast"></div>
@@ -359,7 +441,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 // ============================================================
 // CONFIG
 // ============================================================
-var APPS_URL = 'https://script.google.com/macros/s/AKfycbzhdvjkko6eimAm29usHgC7EGt2DwrKfXfUUPU11sRbVLjcGWx1vGlDDAwAXRQOPcP5/exec';
+var APPS_URL = 'https://script.google.com/macros/s/AKfycbwubc0AbFts9cGpEib7XdPZHb7zPG_V6cOBuyJ5Fc-1vga5L1fv_q2mv0Od6eOg6gaL/exec';
 var SHEET_ID = '1a8yH6URAHix2svN0WIaSTTr7SWksclIFYdOqY-ZBqtw';
 
 // ============================================================
@@ -527,14 +609,8 @@ function buildGio(id) {
 }
 
 // ============================================================
-// TAB
+// TAB — handled in management section above
 // ============================================================
-function showTab(t) {
-  ['form','phieu','hist'].forEach(function(v) {
-    document.getElementById('view-' + v).style.display = v === t ? 'block' : 'none';
-    document.getElementById('tab-' + v).classList.toggle('on', v === t);
-  });
-}
 
 // ============================================================
 // XE TYPE
@@ -908,6 +984,184 @@ function resetAll() {
   document.getElementById('tbadge').className = 'tbadge td';
   document.getElementById('tbadge').textContent = tMap.dong.l;
   document.getElementById('person-body').classList.remove('open');
+}
+
+// ============================================================
+// QUẢN LÝ DỮ LIỆU — KH & KHO
+// ============================================================
+var modalMode = ''; // 'kh' | 'kho'
+var modalIdx  = -1; // -1 = thêm mới, >=0 = sửa
+var hasUnsaved = false;
+
+function showTab(t) {
+  ['form','phieu','hist','ql'].forEach(function(v) {
+    var el = document.getElementById('view-' + v);
+    if (el) el.style.display = v === t ? 'block' : 'none';
+    var tab = document.getElementById('tab-' + v);
+    if (tab) tab.classList.toggle('on', v === t);
+  });
+  if (t === 'ql') { renderKhList(); renderKhoList(); }
+}
+
+// ─── RENDER LISTS ────────────────────────────────────────────
+function renderKhList() {
+  var el = document.getElementById('kh-list');
+  document.getElementById('kh-count').textContent = khs.length;
+  if (!khs.length) { el.innerHTML = '<div class="ql-empty">Chưa có khách hàng nào. Nhấn + Thêm KH</div>'; return; }
+  el.innerHTML = khs.map(function(k, i) {
+    var sub = [k.dia_chi, k.tinh, k.sdt].filter(Boolean).join(' · ');
+    return '<div class="ql-item">'
+      + '<div class="ql-item-info">'
+      + '<div class="ql-item-name">' + esc(k.ten) + '</div>'
+      + (sub ? '<div class="ql-item-sub">' + esc(sub) + '</div>' : '')
+      + '</div>'
+      + (k.ma ? '<span class="ql-item-badge">' + esc(k.ma) + '</span>' : '')
+      + '<div class="ql-actions">'
+      + '<button class="ql-btn" onclick="openModal(\'kh\',' + i + ')">✏️ Sửa</button>'
+      + '<button class="ql-btn del" onclick="delItem(\'kh\',' + i + ')">🗑</button>'
+      + '</div></div>';
+  }).join('') + saveBtnHtml('kh');
+}
+
+function renderKhoList() {
+  var el = document.getElementById('kho-list');
+  document.getElementById('kho-count').textContent = khos.length;
+  if (!khos.length) { el.innerHTML = '<div class="ql-empty">Chưa có kho nào. Nhấn + Thêm kho</div>'; return; }
+  el.innerHTML = khos.map(function(k, i) {
+    return '<div class="ql-item">'
+      + '<div class="ql-item-info">'
+      + '<div class="ql-item-name">' + esc(k.ten) + '</div>'
+      + (k.dia_chi ? '<div class="ql-item-sub">📍 ' + esc(k.dia_chi) + '</div>' : '')
+      + '</div>'
+      + '<div class="ql-actions">'
+      + '<button class="ql-btn" onclick="openModal(\'kho\',' + i + ')">✏️ Sửa</button>'
+      + '<button class="ql-btn del" onclick="delItem(\'kho\',' + i + ')">🗑</button>'
+      + '</div></div>';
+  }).join('') + saveBtnHtml('kho');
+}
+
+function saveBtnHtml(type) {
+  return '<div class="ql-save-row">'
+    + '<button class="ql-save-btn" id="save-' + type + '-btn" onclick="saveToSheet(\'' + type + '\')">'
+    + '💾 Lưu lên Sheet</button></div>';
+}
+
+// ─── MODAL ───────────────────────────────────────────────────
+function openModal(type, idx) {
+  modalMode = type; modalIdx = (idx !== undefined) ? idx : -1;
+  var isNew = modalIdx === -1;
+  var item  = isNew ? {} : (type === 'kh' ? khs[modalIdx] : khos[modalIdx]);
+
+  document.getElementById('modal-title').textContent =
+    (isNew ? 'Thêm ' : 'Sửa ') + (type === 'kh' ? 'Khách hàng' : 'Kho bốc hàng');
+
+  var body = '';
+  if (type === 'kh') {
+    body = '<div class="g2">'
+      + fld('m-ten','Tên khách hàng *', item.ten||'', 'text', 'Siêu thị ABC')
+      + fld('m-ma','Mã KH', item.ma||'', 'text', 'KH-001')
+      + '</div>'
+      + fld('m-dc','Địa chỉ giao hàng', item.dia_chi||'', 'text', 'Số nhà, đường, phường, quận...')
+      + '<div class="g2">'
+      + fldSel('m-tinh','Tỉnh / Thành phố', item.tinh||'',
+          ['','TP. Hồ Chí Minh','Bình Dương','Đồng Nai','Long An','Tây Ninh','Bà Rịa - Vũng Tàu','Tiền Giang','Cần Thơ','Hà Nội','Khác'])
+      + fld('m-sdt','Số điện thoại', item.sdt||'', 'tel', '0xxx xxx xxx')
+      + '</div>';
+  } else {
+    body = fld('m-ten','Tên kho *', item.ten||'', 'text', 'Kho Lạnh Bình Dương')
+      + fld('m-dc','Địa chỉ kho', item.dia_chi||'', 'text', 'KCN, đường, tỉnh...');
+  }
+
+  document.getElementById('modal-body').innerHTML = body;
+  document.getElementById('modal-overlay').style.display = 'flex';
+  setTimeout(function(){ var el = document.getElementById('m-ten'); if(el) el.focus(); }, 100);
+}
+
+function fld(id, lbl, val, type, ph) {
+  return '<div class="f"><label>' + lbl + '</label>'
+    + '<input id="' + id + '" type="' + type + '" value="' + escA(val) + '" placeholder="' + escA(ph) + '"></div>';
+}
+function fldSel(id, lbl, val, opts) {
+  var html = '<div class="f"><label>' + lbl + '</label><select id="' + id + '">';
+  opts.forEach(function(o){ html += '<option' + (o===val?' selected':'') + '>' + esc(o) + '</option>'; });
+  return html + '</select></div>';
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById('modal-overlay')) return;
+  document.getElementById('modal-overlay').style.display = 'none';
+}
+
+function saveModalItem() {
+  var ten = (document.getElementById('m-ten').value || '').trim();
+  if (!ten) { alert('Vui lòng nhập tên!'); return; }
+
+  var item;
+  if (modalMode === 'kh') {
+    item = {
+      ten:     ten,
+      ma:      (document.getElementById('m-ma').value||'').trim(),
+      dia_chi: (document.getElementById('m-dc').value||'').trim(),
+      tinh:    (document.getElementById('m-tinh').value||'').trim(),
+      sdt:     (document.getElementById('m-sdt').value||'').trim()
+    };
+    if (modalIdx === -1) khs.push(item); else khs[modalIdx] = item;
+    ls('nl_khs', khs);
+    renderKhDropdown && renderKhDropdown(); renderKhList();
+  } else {
+    item = {
+      ten:     ten,
+      dia_chi: (document.getElementById('m-dc').value||'').trim()
+    };
+    if (modalIdx === -1) khos.push(item); else khos[modalIdx] = item;
+    ls('nl_khos', khos);
+    renderKhos(); renderKhoList();
+  }
+
+  document.getElementById('modal-overlay').style.display = 'none';
+  showToast((modalIdx === -1 ? '✅ Đã thêm ' : '✅ Đã cập nhật ') + (modalMode==='kh'?'khách hàng':'kho') + '! Nhớ Lưu lên Sheet.', false);
+}
+
+function delItem(type, idx) {
+  var name = type === 'kh' ? khs[idx].ten : khos[idx].ten;
+  if (!confirm('Xóa "' + name + '" khỏi danh sách?')) return;
+  if (type === 'kh') { khs.splice(idx, 1); ls('nl_khs', khs); renderKhList(); renderKhDropdown && renderKhDropdown(); }
+  else               { khos.splice(idx, 1); ls('nl_khos', khos); renderKhoList(); renderKhos(); }
+  showToast('🗑 Đã xóa "' + name + '". Nhớ Lưu lên Sheet.', false);
+}
+
+// ─── SAVE TO SHEET ────────────────────────────────────────────
+async function saveToSheet(type) {
+  var btn = document.getElementById('save-' + type + '-btn');
+  btn.innerHTML = '<span class="spin"></span> Đang lưu...'; btn.disabled = true;
+
+  var action = type === 'kh' ? 'saveKhs' : 'saveKhos';
+  var data   = type === 'kh' ? khs : khos;
+
+  try {
+    var d = await appsPost({ action: action, sheetId: SHEET_ID, data: data });
+    if (d.status === 'ok') {
+      showToast('✅ Đã lưu ' + (type==='kh'?'Khách hàng':'Kho bốc hàng') + ' lên Sheet!', false);
+    } else throw new Error(d.message || 'Lỗi');
+  } catch(e) {
+    showToast('⚠ Lưu thất bại: ' + e.message, true);
+  }
+  btn.innerHTML = '💾 Lưu lên Sheet'; btn.disabled = false;
+}
+
+// ─── RE-RENDER KH DROPDOWN SAU KHI SỬA ─────────────────────
+function renderKhDropdown() {
+  var sel = document.getElementById('kh-sel');
+  var html = '<option value="">-- Chọn khách hàng --</option>';
+  khs.forEach(function(k) {
+    html += '<option value="' + escA(k.ten) + '" '
+      + 'data-ma="' + escA(k.ma||'') + '" '
+      + 'data-dc="' + escA(k.dia_chi||'') + '" '
+      + 'data-tinh="' + escA(k.tinh||'') + '">'
+      + esc(k.ten) + (k.ma ? ' (' + k.ma + ')' : '')
+      + '</option>';
+  });
+  sel.innerHTML = html;
 }
 
 // ============================================================
