@@ -206,22 +206,113 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
 .empty-state { padding: 40px; text-align: center; color: var(--text3); font-size: 14px; }
 .empty-state .ei { font-size: 36px; margin-bottom: 8px; }
 
+/* ── MOBILE CARD (chấm công) ─────────────────────── */
+.mob-list { display: none; }
+.mob-card {
+  display: flex; align-items: center; gap: 10px;
+  padding: 12px 14px; border-bottom: 1px solid var(--border);
+  transition: background var(--trans);
+}
+.mob-card:last-child { border-bottom: none; }
+.mob-card:active { background: rgba(255,255,255,.03); }
+.mob-card-info { flex: 1; min-width: 0; }
+.mob-card-name { font-size: 13.5px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mob-card-sub { font-size: 11px; color: var(--text3); font-family: var(--mono); margin-top: 1px; }
+.mob-card-times { display: flex; align-items: center; gap: 6px; margin-top: 4px; }
+.mob-time-chip { font-family: var(--mono); font-size: 11px; padding: 2px 7px; border-radius: 99px; }
+.mob-time-in  { background: var(--in-bg);  color: var(--in);  border: 1px solid var(--in-bd); }
+.mob-time-out { background: var(--out-bg); color: var(--out); border: 1px solid var(--out-bd); }
+.mob-time-empty { color: var(--text3); font-size: 11px; }
+.mob-card-right { display: flex; flex-direction: column; align-items: flex-end; gap: 6px; flex-shrink: 0; }
+.mob-punch-in  { padding: 7px 14px; border-radius: var(--r2); cursor: pointer; font-size: 12px; font-weight: 700; font-family: var(--font); border: 1px solid var(--in-bd); background: var(--in-bg); color: var(--in); white-space: nowrap; }
+.mob-punch-out { padding: 7px 14px; border-radius: var(--r2); cursor: pointer; font-size: 12px; font-weight: 700; font-family: var(--font); border: 1px solid var(--out-bd); background: var(--out-bg); color: var(--out); white-space: nowrap; }
+.mob-btn-edit  { padding: 4px 10px; border-radius: var(--r2); cursor: pointer; font-size: 11px; font-family: var(--font); border: 1px solid var(--border); background: transparent; color: var(--text3); }
+
 /* ── RESPONSIVE ─────────────────────────────────── */
-@media (max-width: 960px) {
-  .sidebar { transform: translateX(-100%); }
-  .sidebar.open { transform: none; }
-  .main { margin-left: 0; }
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .hamburger { display: block; }
-}
-@media (max-width: 640px) {
-  .stats-row { grid-template-columns: 1fr 1fr; }
-  .page { padding: 12px; }
-  .date-badge { display: none; }
-  .att-t th:nth-child(2), .att-t td:nth-child(2) { display: none; }
-}
 .overlay-bg { display: none; position: fixed; inset: 0; z-index: 99; }
 .overlay-bg.show { display: block; }
+
+/* Tablet */
+@media (max-width: 960px) {
+  .sidebar  { transform: translateX(-100%); box-shadow: none; }
+  .sidebar.open { transform: none; box-shadow: 8px 0 32px rgba(0,0,0,.5); }
+  .main     { margin-left: 0; }
+  .hamburger{ display: block; }
+  .stats-row{ grid-template-columns: 1fr 1fr; }
+}
+
+/* Mobile */
+@media (max-width: 640px) {
+  body { font-size: 14px; }
+
+  /* Topbar */
+  .topbar { padding: 0 12px; height: 52px; }
+  .page-title { font-size: 13.5px; }
+  .clock { font-size: 12px; padding: 3px 9px; }
+  .date-badge { display: none; }
+
+  /* Page */
+  .page { padding: 10px; }
+
+  /* Stats: 2×2 compact */
+  .stats-row {
+    grid-template-columns: 1fr 1fr;
+    gap: 8px; margin-bottom: 12px;
+  }
+  .stat { padding: 10px 12px; gap: 8px; }
+  .stat-icon { width: 30px; height: 30px; font-size: 14px; border-radius: 7px; }
+  .stat-val   { font-size: 18px; }
+  .stat-label { font-size: 10.5px; }
+
+  /* Panel header: stack */
+  .panel-hdr {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px; padding: 10px 12px;
+  }
+  .panel-title { font-size: 13px; }
+  .search-box  { width: 100%; }
+  .ftabs {
+    overflow-x: auto; -webkit-overflow-scrolling: touch;
+    padding-bottom: 2px; gap: 5px;
+    scrollbar-width: none;
+  }
+  .ftabs::-webkit-scrollbar { display: none; }
+  .ftab { flex-shrink: 0; padding: 5px 13px; }
+
+  /* Attendance: hide table, show cards */
+  .att-table-wrap { display: none; }
+  .mob-list { display: block; }
+
+  /* Table toolbar: wrap */
+  .table-toolbar {
+    flex-wrap: wrap; gap: 6px; padding: 10px 12px;
+  }
+  .table-toolbar .search-box { width: 100%; min-width: 0; max-width: 100% !important; }
+  .table-toolbar .fsel,
+  .table-toolbar .fdate { font-size: 12px; padding: 5px 8px; flex: 1; min-width: 0; }
+
+  /* History table: hide some cols */
+  .std th:nth-child(7), .std td:nth-child(7),  /* ghi chú */
+  .std th:nth-child(5), .std td:nth-child(5) { display: none; } /* giờ ra (lịch sử) */
+
+  /* Staff table: hide some cols */
+  #page-staff .std th:nth-child(3), #page-staff .std td:nth-child(3),
+  #page-staff .std th:nth-child(4), #page-staff .std td:nth-child(4) { display: none; }
+
+  /* Modals: full width */
+  .modal { width: 96vw !important; border-radius: 12px; }
+  .frow  { grid-template-columns: 1fr; }
+
+  /* Settings */
+  .sc { padding: 14px; }
+
+  /* Export button text */
+  .export-month-label { display: none; }
+
+  /* Buttons in toolbar */
+  .table-toolbar .btn { font-size: 12px; padding: 5px 10px; }
+}
 
 @keyframes rowPop { 0%{transform:scale(1)} 40%{transform:scale(1.015)} 100%{transform:scale(1)} }
 .row-pop td { animation: rowPop .3s ease; }
@@ -389,7 +480,7 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
             <button class="ftab"        data-f="done"   onclick="setF('done',this)">Đã về</button>
           </div>
         </div>
-        <div style="overflow-x:auto">
+        <div class="att-table-wrap" style="overflow-x:auto">
           <table class="att-t">
             <thead><tr>
               <th>Nhân viên</th>
@@ -404,6 +495,9 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
             </tbody>
           </table>
         </div>
+        <div class="mob-list" id="mob-list">
+          <div class="empty-state"><div class="ei">⏳</div>Đang tải...</div>
+        </div>
       </div>
     </div>
 
@@ -416,10 +510,10 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
           <input class="fdate" type="date" id="f-tu" onchange="loadHistory()"/>
           <span style="color:var(--text3);font-size:12px">→</span>
           <input class="fdate" type="date" id="f-den" onchange="loadHistory()"/>
-          <button class="btn btn-secondary btn-sm" onclick="clearF()">✕ Xoá lọc</button>
-          <div style="display:flex;gap:6px;margin-left:auto">
+          <button class="btn btn-secondary btn-sm" onclick="clearF()">✕</button>
+          <div style="display:flex;gap:6px;margin-left:auto;flex-shrink:0">
             <button class="btn btn-secondary btn-sm" onclick="exportCSV()">📥 CSV</button>
-            <button class="btn btn-sm" onclick="openExportMonth()" style="background:linear-gradient(135deg,#059669,#6366f1);color:#fff;font-weight:700;border:none">📊 Xuất Excel tháng</button>
+            <button class="btn btn-sm" onclick="openExportMonth()" style="background:linear-gradient(135deg,#059669,#6366f1);color:#fff;font-weight:700;border:none">📊 <span class="export-month-label">Xuất Excel </span>Tháng</button>
           </div>
         </div>
         <div style="overflow-x:auto">
@@ -610,29 +704,33 @@ const AVC=[['#10b981','#022c22'],['#6366f1','#1e1b4b'],['#f59e0b','#451a03'],
 function avColor(s) { let h=0; for(let c of s)h=(h*31+c.charCodeAt(0))&0xffff; return AVC[h%AVC.length]; }
 
 function renderAtt(data) {
-  const tb=document.getElementById('att-tbody');
+  const tb  = document.getElementById('att-tbody');
+  const mob = document.getElementById('mob-list');
+
   if (!data.length) {
-    const msgs={absent:'🎉 Tất cả nhân viên đã chấm công!',in:'Không ai đang làm.',done:'Không ai đã về.',all:'Chưa có nhân viên nào.'};
-    tb.innerHTML=`<tr><td colspan="6"><div class="empty-state"><div class="ei">${fMode==='absent'?'🎉':'📭'}</div>${msgs[fMode]||'Không có dữ liệu'}</div></td></tr>`;
+    const msgs = { absent:'🎉 Tất cả đã chấm công!', in:'Không ai đang làm.', done:'Không ai đã về.', all:'Chưa có nhân viên.' };
+    const empty = `<div class="empty-state"><div class="ei">${fMode==='absent'?'🎉':'📭'}</div>${msgs[fMode]||'Không có dữ liệu'}</div>`;
+    tb.innerHTML  = `<tr><td colspan="6">${empty}</td></tr>`;
+    mob.innerHTML = empty;
     return;
   }
-  tb.innerHTML = data.map(nv=>{
-    const [bg,fg]=avColor(nv.hoTen);
-    const init=nv.hoTen.split(' ').slice(-2).map(w=>w[0]).join('').toUpperCase();
 
-    let badge,btns;
+  // ── Desktop table rows ───────────────────────────
+  tb.innerHTML = data.map(nv => {
+    const [bg,fg] = avColor(nv.hoTen);
+    const init = nv.hoTen.split(' ').slice(-2).map(w=>w[0]).join('').toUpperCase();
+    let badge, btns;
     if (nv.status==='done') {
-      badge=`<span class="badge b-done">✅ Hoàn thành</span>`;
-      btns=`<button class="btn-row" onclick='openCCRow(${JSON.stringify({maNV:nv.maNV,hoTen:nv.hoTen})})'>✏️ Sửa</button>`;
+      badge = `<span class="badge b-done">✅ Hoàn thành</span>`;
+      btns  = `<button class="btn-row" onclick='openCCRow(${JSON.stringify({maNV:nv.maNV,hoTen:nv.hoTen})})'>✏️ Sửa</button>`;
     } else if (nv.status==='in') {
-      badge=`<span class="badge b-in">☀️ Đang làm</span>`;
-      btns=`<button class="punch-out" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','ra',this)">🌙 Ra về</button>
-            <button class="btn-row" onclick='openCCRow(${JSON.stringify({maNV:nv.maNV,hoTen:nv.hoTen})})'>✏️</button>`;
+      badge = `<span class="badge b-in">☀️ Đang làm</span>`;
+      btns  = `<button class="punch-out" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','ra',this)">🌙 Ra về</button>
+               <button class="btn-row"   onclick='openCCRow(${JSON.stringify({maNV:nv.maNV,hoTen:nv.hoTen})})'>✏️</button>`;
     } else {
-      badge=`<span class="badge b-absent">⚠️ Chưa chấm</span>`;
-      btns=`<button class="punch-in" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','vao',this)">☀️ Vào làm</button>`;
+      badge = `<span class="badge b-absent">⚠️ Chưa chấm</span>`;
+      btns  = `<button class="punch-in" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','vao',this)">☀️ Vào làm</button>`;
     }
-
     return `<tr id="row-${nv.maNV}">
       <td><div class="nv-cell">
         <div class="avatar" style="background:${bg};color:${fg}">${init}</div>
@@ -644,6 +742,41 @@ function renderAtt(data) {
       <td>${badge}</td>
       <td style="text-align:right;padding-right:14px"><div style="display:flex;gap:6px;justify-content:flex-end">${btns}</div></td>
     </tr>`;
+  }).join('');
+
+  // ── Mobile card list ─────────────────────────────
+  mob.innerHTML = data.map(nv => {
+    const [bg,fg] = avColor(nv.hoTen);
+    const init = nv.hoTen.split(' ').slice(-2).map(w=>w[0]).join('').toUpperCase();
+    const times = nv.gioVao
+      ? `<span class="mob-time-chip mob-time-in">☀ ${nv.gioVao}</span>${nv.gioRa?`<span style="color:var(--text3);font-size:10px">→</span><span class="mob-time-chip mob-time-out">🌙 ${nv.gioRa}`:''}`
+      : `<span class="mob-time-empty">Chưa chấm công</span>`;
+    const closingSpan = nv.gioVao && nv.gioRa ? '</span>' : '';
+
+    let badge, actionBtn;
+    if (nv.status==='done') {
+      badge     = `<span class="badge b-done" style="font-size:10.5px">✅ Xong</span>`;
+      actionBtn = `<button class="mob-btn-edit" onclick='openCCRow(${JSON.stringify({maNV:nv.maNV,hoTen:nv.hoTen})})'>✏️ Sửa</button>`;
+    } else if (nv.status==='in') {
+      badge     = `<span class="badge b-in" style="font-size:10.5px">☀️ Đang làm</span>`;
+      actionBtn = `<button class="mob-punch-out" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','ra',this)">🌙 Ra về</button>`;
+    } else {
+      badge     = `<span class="badge b-absent" style="font-size:10.5px">⚠️ Chưa chấm</span>`;
+      actionBtn = `<button class="mob-punch-in" onclick="punch('${nv.maNV}','${escQ(nv.hoTen)}','vao',this)">☀️ Vào làm</button>`;
+    }
+
+    return `<div class="mob-card" id="mob-row-${nv.maNV}">
+      <div class="avatar" style="background:${bg};color:${fg};width:36px;height:36px;font-size:13px;flex-shrink:0">${init}</div>
+      <div class="mob-card-info">
+        <div class="mob-card-name">${nv.hoTen}</div>
+        <div class="mob-card-sub">${nv.maNV}${nv.phongBan?' · '+nv.phongBan:''}</div>
+        <div class="mob-card-times">${times}${closingSpan}</div>
+      </div>
+      <div class="mob-card-right">
+        ${badge}
+        ${actionBtn}
+      </div>
+    </div>`;
   }).join('');
 }
 
@@ -660,8 +793,10 @@ async function punch(maNV, hoTen, loai, btn) {
   else               todayRec[maNV].gioRa=res.gio;
   todayRec[maNV].trangThai='Đúng giờ';
   buildAtt();
-  const row=document.getElementById('row-'+maNV);
-  if(row) { row.classList.add('row-pop'); setTimeout(()=>row.classList.remove('row-pop'),350); }
+  const row    = document.getElementById('row-' + maNV);
+  const mobRow = document.getElementById('mob-row-' + maNV);
+  if (row)    { row.classList.add('row-pop');    setTimeout(()=>row.classList.remove('row-pop'),350); }
+  if (mobRow) { mobRow.style.transition='background .3s'; mobRow.style.background='rgba(16,185,129,.08)'; setTimeout(()=>mobRow.style.background='',600); }
 }
 
 function openCCRow(nv) {
