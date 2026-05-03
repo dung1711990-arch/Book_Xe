@@ -6,6 +6,7 @@
 <title>HRM · Chấm Công</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link href="https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 :root {
@@ -290,6 +291,45 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
   </div>
 </div>
 
+<!-- Modal: Xuất Excel tháng -->
+<div class="modal-overlay" id="modal-export">
+  <div class="modal" style="width:420px">
+    <div class="modal-hdr">
+      <span class="modal-title">📊 Xuất Bảng Công Tháng (Excel)</span>
+      <button class="modal-close" onclick="closeModal('modal-export')">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="frow">
+        <div>
+          <label class="fl">Tháng</label>
+          <select class="fs" id="exp-month">
+            <option value="1">Tháng 1</option><option value="2">Tháng 2</option>
+            <option value="3">Tháng 3</option><option value="4">Tháng 4</option>
+            <option value="5" selected>Tháng 5</option><option value="6">Tháng 6</option>
+            <option value="7">Tháng 7</option><option value="8">Tháng 8</option>
+            <option value="9">Tháng 9</option><option value="10">Tháng 10</option>
+            <option value="11">Tháng 11</option><option value="12">Tháng 12</option>
+          </select>
+        </div>
+        <div>
+          <label class="fl">Năm</label>
+          <input class="fi" id="exp-year" type="number" value="2026" min="2020" max="2099"/>
+        </div>
+      </div>
+      <div style="background:var(--surf2);border-radius:var(--r2);padding:12px 14px;font-size:12.5px;color:var(--text2);line-height:1.8">
+        📋 File Excel sẽ gồm:<br/>
+        &nbsp;• Bảng chấm công từng ngày trong tháng<br/>
+        &nbsp;• Hàng: Vào / Ra / Công cho mỗi nhân viên<br/>
+        &nbsp;• Tính tự động: 1 công (≥8h), 0.5 công (4-8h)
+      </div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn btn-secondary" onclick="closeModal('modal-export')">Huỷ</button>
+      <button class="btn btn-primary" id="btn-do-export" onclick="doExportMonth()">📊 Tạo & Tải về</button>
+    </div>
+  </div>
+</div>
+
 <!-- APP SHELL -->
 <div class="app">
   <aside class="sidebar" id="sidebar">
@@ -377,7 +417,10 @@ code { background: var(--surf2); padding: 1px 6px; border-radius: 4px; font-fami
           <span style="color:var(--text3);font-size:12px">→</span>
           <input class="fdate" type="date" id="f-den" onchange="loadHistory()"/>
           <button class="btn btn-secondary btn-sm" onclick="clearF()">✕ Xoá lọc</button>
-          <button class="btn btn-primary btn-sm" style="margin-left:auto" onclick="exportCSV()">📥 CSV</button>
+          <div style="display:flex;gap:6px;margin-left:auto">
+            <button class="btn btn-secondary btn-sm" onclick="exportCSV()">📥 CSV</button>
+            <button class="btn btn-sm" onclick="openExportMonth()" style="background:linear-gradient(135deg,#059669,#6366f1);color:#fff;font-weight:700;border:none">📊 Xuất Excel tháng</button>
+          </div>
         </div>
         <div style="overflow-x:auto">
           <table class="std" id="hist-table">
@@ -808,6 +851,259 @@ document.querySelectorAll('.modal-overlay').forEach(m=>m.addEventListener('click
 function refreshAll() {
   const id=document.querySelector('.page.active')?.id?.replace('page-','');
   if (id) navigate(id);
+}
+
+// ════════ MONTHLY EXCEL EXPORT ═════════════════════
+function openExportMonth() {
+  const now = new Date();
+  document.getElementById('exp-month').value = now.getMonth() + 1;
+  document.getElementById('exp-year').value  = now.getFullYear();
+  openModal('modal-export');
+}
+
+async function doExportMonth() {
+  const month = parseInt(document.getElementById('exp-month').value);
+  const year  = parseInt(document.getElementById('exp-year').value);
+  const btn   = document.getElementById('btn-do-export');
+  btn.disabled = true; btn.textContent = '⏳ Đang tạo...';
+
+  try {
+    const daysCount = new Date(year, month, 0).getDate();
+    const tuNgay  = `${year}-${String(month).padStart(2,'0')}-01`;
+    const denNgay = `${year}-${String(month).padStart(2,'0')}-${String(daysCount).padStart(2,'0')}`;
+
+    const [nvRes, ccRes] = await Promise.all([
+      api('getDanhSachNV', {}),
+      api('getLichSuCC', { tuNgay, denNgay })
+    ]);
+    if (!nvRes || !ccRes) { btn.disabled=false; btn.textContent='📊 Tạo & Tải về'; return; }
+
+    const staff     = nvRes.data || [];
+    const ccRecords = ccRes.data || [];
+
+    // Build lookup: maNV → { "YYYY-MM-DD": { gioVao, gioRa } }
+    const lookup = {};
+    ccRecords.forEach(r => {
+      if (!lookup[r.maNV]) lookup[r.maNV] = {};
+      const d = r.ngayChamCong;
+      if (!lookup[r.maNV][d]) lookup[r.maNV][d] = { gioVao:'', gioRa:'' };
+      if (r.gioVao) lookup[r.maNV][d].gioVao = r.gioVao;
+      if (r.gioRa)  lookup[r.maNV][d].gioRa  = r.gioRa;
+    });
+
+    // Day-of-week labels
+    const DOW = ['CN','T2','T3','T4','T5','T6','T7'];
+    const days = [];
+    for (let d = 1; d <= daysCount; d++) {
+      const dt  = new Date(year, month-1, d);
+      const dow = DOW[dt.getDay()];
+      const key = `${year}-${String(month).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+      days.push({ d, dow, key, weekend: dt.getDay()===0 || dt.getDay()===6 });
+    }
+
+    buildMonthlyExcel(staff, lookup, days, month, year, daysCount);
+    toast(`✅ Đã xuất bảng công Tháng ${month}/${year}`, 'success');
+    closeModal('modal-export');
+  } finally {
+    btn.disabled=false; btn.textContent='📊 Tạo & Tải về';
+  }
+}
+
+function calcCong(gioVao, gioRa) {
+  if (!gioVao && !gioRa) return '';
+  if (!gioRa) return 0.5;
+  const toMin = t => { const [h,m] = t.split(':').map(Number); return h*60+m; };
+  const diff  = toMin(gioRa) - toMin(gioVao);
+  if (diff <= 0)   return 0.5;
+  if (diff < 240)  return 0.5;   // < 4h
+  if (diff < 480)  return 0.5;   // 4h–8h
+  return 1;
+}
+
+function buildMonthlyExcel(staff, lookup, days, month, year, daysCount) {
+  if (!window.XLSX) { toast('Thư viện XLSX chưa tải xong, thử lại sau','error'); return; }
+  const XL = window.XLSX;
+
+  const wb = XL.utils.book_new();
+  const aoa = []; // array of arrays
+
+  // ── ROW 0: Title header ─────────────────────────
+  const r0 = ['Tháng', '', ''];
+  for (let i = 0; i < daysCount; i++) r0.push(i===0 ? `Tháng ${month.toString().padStart(2,'0')}/${year}` : '');
+  aoa.push(r0);
+
+  // ── ROW 1: Day numbers ──────────────────────────
+  const r1 = ['', 'Ngày', ''];
+  days.forEach(d => r1.push(d.d));
+  aoa.push(r1);
+
+  // ── ROW 2: Column headers (day of week) ─────────
+  const r2 = ['MSNV', 'HỌ TÊN', 'CHẤM CÔNG'];
+  days.forEach(d => r2.push(d.dow));
+  aoa.push(r2);
+
+  // ── Employee rows (3 rows each) ─────────────────
+  staff.forEach(nv => {
+    const rowV = [nv.maNV, nv.hoTen, 'Vào'];
+    const rowR = ['',       '',        'Ra'];
+    const rowC = ['',       '',        'Công'];
+
+    days.forEach(day => {
+      const rec = lookup[nv.maNV]?.[day.key] || {};
+      rowV.push(rec.gioVao || '');
+      rowR.push(rec.gioRa  || '');
+      rowC.push(calcCong(rec.gioVao, rec.gioRa));
+    });
+
+    aoa.push(rowV, rowR, rowC);
+  });
+
+  // ── Build worksheet ──────────────────────────────
+  const ws = XL.utils.aoa_to_sheet(aoa);
+
+  // ── Column widths ────────────────────────────────
+  ws['!cols'] = [
+    { wch: 8 },   // MSNV
+    { wch: 20 },  // HỌ TÊN
+    { wch: 8 },   // CHẤM CÔNG
+    ...days.map(() => ({ wch: 6 }))
+  ];
+
+  // ── Row heights ──────────────────────────────────
+  ws['!rows'] = [
+    { hpt: 18 }, // row 0 title
+    { hpt: 15 }, // row 1 ngày
+    { hpt: 18 }, // row 2 header
+    ...staff.flatMap(() => [{hpt:16},{hpt:16},{hpt:16}])
+  ];
+
+  // ── Merges ───────────────────────────────────────
+  const merges = [];
+  // Title row: A1:C1 | D1:end
+  merges.push({ s:{r:0,c:0}, e:{r:0,c:2} });
+  merges.push({ s:{r:0,c:3}, e:{r:0,c:2+daysCount} });
+
+  // Employee row merges: MSNV and HỌ TÊN span 3 rows
+  staff.forEach((_, i) => {
+    const baseR = 3 + i * 3;
+    merges.push({ s:{r:baseR,c:0}, e:{r:baseR+2,c:0} }); // MSNV
+    merges.push({ s:{r:baseR,c:1}, e:{r:baseR+2,c:1} }); // HỌ TÊN
+  });
+  ws['!merges'] = merges;
+
+  // ── Cell styles via SheetJS (basic) ─────────────
+  // Add style to all cells manually using ws[address].s
+  const totalRows = 3 + staff.length * 3;
+  const totalCols = 3 + daysCount;
+
+  // Helper: column letter from 0-based index
+  function colName(c) {
+    let name=''; c++;
+    while(c>0){name=String.fromCharCode(65+(c-1)%26)+name;c=Math.floor((c-1)/26);}
+    return name;
+  }
+
+  // Style definitions
+  const styleHeader = {
+    font: { bold:true, sz:10, color:{rgb:'FFFFFF'} },
+    fill: { fgColor:{rgb:'1F2336'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center', wrapText:true },
+    border: { top:{style:'thin',color:{rgb:'333a52'}}, bottom:{style:'thin',color:{rgb:'333a52'}}, left:{style:'thin',color:{rgb:'333a52'}}, right:{style:'thin',color:{rgb:'333a52'}} }
+  };
+  const styleTitle = {
+    font: { bold:true, sz:11, color:{rgb:'FFFFFF'} },
+    fill: { fgColor:{rgb:'111318'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' }
+  };
+  const styleDayNum = {
+    font: { bold:true, sz:9 },
+    fill: { fgColor:{rgb:'252A3A'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'333a52'}}, bottom:{style:'thin',color:{rgb:'333a52'}}, left:{style:'thin',color:{rgb:'333a52'}}, right:{style:'thin',color:{rgb:'333a52'}} }
+  };
+  const styleDowWeek = {
+    font: { bold:true, sz:9, color:{rgb:'10B981'} },
+    fill: { fgColor:{rgb:'252A3A'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'333a52'}}, bottom:{style:'thin',color:{rgb:'333a52'}}, left:{style:'thin',color:{rgb:'333a52'}}, right:{style:'thin',color:{rgb:'333a52'}} }
+  };
+  const styleDowWeekend = {
+    font: { bold:true, sz:9, color:{rgb:'6366F1'} },
+    fill: { fgColor:{rgb:'1E2042'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'333a52'}}, bottom:{style:'thin',color:{rgb:'333a52'}}, left:{style:'thin',color:{rgb:'333a52'}}, right:{style:'thin',color:{rgb:'333a52'}} }
+  };
+  const styleNVCode = {
+    font: { bold:true, sz:9 },
+    fill: { fgColor:{rgb:'1F2336'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center', wrapText:true },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleNVName = {
+    font: { bold:true, sz:9 },
+    fill: { fgColor:{rgb:'181C27'}, patternType:'solid' },
+    alignment: { horizontal:'left', vertical:'center', wrapText:true },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleLabel = {
+    font: { sz:9, color:{rgb:'8892AA'} },
+    fill: { fgColor:{rgb:'181C27'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleDataVao = {
+    font: { sz:9, color:{rgb:'10B981'} },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleDataRa = {
+    font: { sz:9, color:{rgb:'F59E0B'} },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleDataCong = {
+    font: { bold:true, sz:9, color:{rgb:'6366F1'} },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+  const styleWeekendCell = {
+    font: { sz:9 },
+    fill: { fgColor:{rgb:'1A1D2E'}, patternType:'solid' },
+    alignment: { horizontal:'center', vertical:'center' },
+    border: { top:{style:'thin',color:{rgb:'2D3452'}}, bottom:{style:'thin',color:{rgb:'2D3452'}}, left:{style:'thin',color:{rgb:'2D3452'}}, right:{style:'thin',color:{rgb:'2D3452'}} }
+  };
+
+  // Apply styles row by row
+  for (let r = 0; r < totalRows; r++) {
+    for (let c = 0; c < totalCols; c++) {
+      const addr = colName(c) + (r+1);
+      if (!ws[addr]) ws[addr] = { v:'', t:'s' };
+
+      if (r === 0) { ws[addr].s = styleTitle; continue; }
+      if (r === 1) { ws[addr].s = styleDayNum; continue; }
+      if (r === 2) {
+        if (c < 3) { ws[addr].s = styleHeader; continue; }
+        ws[addr].s = days[c-3]?.weekend ? styleDowWeekend : styleDowWeek;
+        continue;
+      }
+
+      // Employee rows
+      const empIdx  = Math.floor((r-3) / 3);
+      const subRow  = (r-3) % 3;  // 0=Vào, 1=Ra, 2=Công
+      if (c === 0) { ws[addr].s = styleNVCode; continue; }
+      if (c === 1) { ws[addr].s = styleNVName; continue; }
+      if (c === 2) { ws[addr].s = styleLabel;  continue; }
+
+      const isWeekend = days[c-3]?.weekend;
+      if (isWeekend) { ws[addr].s = styleWeekendCell; continue; }
+      if (subRow === 0) { ws[addr].s = styleDataVao;  continue; }
+      if (subRow === 1) { ws[addr].s = styleDataRa;   continue; }
+      if (subRow === 2) { ws[addr].s = styleDataCong; continue; }
+    }
+  }
+
+  XL.utils.book_append_sheet(wb, ws, `Tháng ${month}-${year}`);
+  XL.writeFile(wb, `BangCong_T${String(month).padStart(2,'0')}_${year}.xlsx`);
 }
 
 // ════════ INIT ═════════════════════════════════════
