@@ -243,73 +243,101 @@ table.att tbody tr:hover,table.std tbody tr:hover{background:rgba(255,255,255,.0
 .toolbar{padding:11px 14px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 
 /* ══════════════════════════════════════════
-   QUICK PUNCH PAGE
+   QUICK PUNCH PAGE — redesigned
 ══════════════════════════════════════════ */
-.qp-wrap{display:grid;grid-template-columns:1fr 1fr;gap:16px;max-width:900px}
+.qp-page{max-width:680px}
 
-/* Left: Search & list */
-.qp-left,.qp-right{background:var(--surf);border:1px solid var(--bd);border-radius:var(--r3);overflow:hidden}
-.qp-sec-title{font-size:13.5px;font-weight:700;padding:14px 16px;border-bottom:1px solid var(--bd);display:flex;align-items:center;gap:8px}
-.qp-search-wrap{padding:12px 14px;border-bottom:1px solid var(--bd)}
+/* Search bar */
+.qp-topbar{
+  background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);
+  padding:12px 14px;margin-bottom:12px;display:flex;align-items:center;gap:10px;
+}
 .qp-search{
-  width:100%;background:var(--surf2);border:1.5px solid var(--bd2);
+  flex:1;background:var(--surf2);border:1.5px solid var(--bd2);
   color:var(--text);font-family:var(--font);font-size:14px;
-  padding:10px 14px 10px 40px;border-radius:var(--r);outline:none;
+  padding:9px 14px 9px 38px;border-radius:var(--r2);outline:none;
   transition:border-color var(--t);
 }
 .qp-search:focus{border-color:var(--green)}
-.qp-si{position:absolute;left:12px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:var(--text3)}
-.qp-rel{position:relative}
-.qp-nv-list{max-height:340px;overflow-y:auto}
-.qp-nv-item{
-  display:flex;align-items:center;gap:10px;padding:11px 14px;cursor:pointer;
-  border-bottom:1px solid var(--bd);transition:background var(--t);
-}
-.qp-nv-item:last-child{border-bottom:none}
-.qp-nv-item:hover{background:var(--surf2)}
-.qp-nv-item.sel{background:var(--gbg);border-left:3px solid var(--green)}
-.qp-nv-name{font-size:13.5px;font-weight:600}
-.qp-nv-sub{font-size:11px;color:var(--text3);font-family:var(--mono);margin-top:1px}
+.qp-si{position:absolute;left:11px;top:50%;transform:translateY(-50%);font-size:15px;pointer-events:none;color:var(--text3)}
+.qp-rel{position:relative;flex:1}
+.qp-count{font-size:12px;color:var(--text3);white-space:nowrap}
 
-/* Right: Action panel */
-.qp-action-area{padding:20px}
-.qp-placeholder{padding:40px 20px;text-align:center;color:var(--text3)}
-.qp-placeholder .pi{font-size:40px;margin-bottom:10px}
-.qp-nv-card{display:none}
-.qp-nv-card.show{display:block}
-.qp-card-top{display:flex;align-items:center;gap:12px;margin-bottom:14px}
-.qp-card-name{font-size:16px;font-weight:800}
-.qp-card-meta{font-size:12px;color:var(--text2);margin-top:2px}
-.qp-today-status{
-  background:var(--surf2);border-radius:var(--r2);padding:10px 12px;
-  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
-  font-size:12px;margin-bottom:16px;
+/* Employee card in quick punch */
+.qp-card-list{display:flex;flex-direction:column;gap:8px}
+.qp-emp-card{
+  background:var(--surf);border:1px solid var(--bd);border-radius:var(--r);
+  overflow:hidden;transition:border-color var(--t);
 }
-.qp-big-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:12px}
-.qp-big-btn{
-  padding:18px 12px;border-radius:var(--r);cursor:pointer;
-  font-size:16px;font-weight:800;font-family:var(--font);border:none;
-  display:flex;flex-direction:column;align-items:center;gap:4px;
+.qp-emp-card:hover{border-color:var(--bd2)}
+.qp-emp-top{
+  display:flex;align-items:center;gap:12px;padding:12px 16px;
+  cursor:pointer;
+}
+.qp-emp-info{flex:1;min-width:0}
+.qp-emp-name{font-size:14px;font-weight:700}
+.qp-emp-meta{font-size:11.5px;color:var(--text2);margin-top:1px}
+.qp-emp-times{display:flex;align-items:center;gap:6px;margin-top:5px;flex-wrap:wrap}
+
+/* Expand area */
+.qp-emp-body{
+  display:none;
+  border-top:1px solid var(--bd);
+  padding:14px 16px;
+  background:var(--surf2);
+  animation:slideDown .2s ease;
+}
+.qp-emp-body.open{display:block}
+@keyframes slideDown{from{opacity:0;transform:translateY(-6px)}to{opacity:1;transform:none}}
+.qp-action-btns{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px}
+.qp-abtn{
+  padding:14px;border-radius:var(--r2);cursor:pointer;
+  font-size:15px;font-weight:800;font-family:var(--font);border:none;
+  display:flex;flex-direction:column;align-items:center;gap:3px;
   transition:all .2s ease;
 }
-.qp-big-btn span{font-size:11px;font-weight:500;opacity:.85}
-.qbtn-in {background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 4px 16px rgba(16,185,129,.3)}
-.qbtn-in:hover{box-shadow:0 6px 22px rgba(16,185,129,.5);transform:translateY(-1px)}
-.qbtn-out{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 4px 16px rgba(245,158,11,.25)}
-.qbtn-out:hover{box-shadow:0 6px 22px rgba(245,158,11,.45);transform:translateY(-1px)}
-.qp-big-btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
-.qp-note{width:100%;background:var(--surf2);border:1px solid var(--bd);color:var(--text);font-family:var(--font);font-size:13px;padding:9px 12px;border-radius:var(--r2);outline:none;transition:border-color var(--t);margin-bottom:12px}
-.qp-note:focus{border-color:var(--green)}
-
-/* Success flash */
-.qp-flash{
-  display:none;text-align:center;padding:30px 16px;
-  animation:fadeIn .3s ease;
+.qp-abtn span{font-size:10.5px;font-weight:500;opacity:.85}
+.qbtn-in {background:linear-gradient(135deg,#10b981,#059669);color:#fff;box-shadow:0 3px 12px rgba(16,185,129,.3)}
+.qbtn-in:hover{box-shadow:0 5px 18px rgba(16,185,129,.5);transform:translateY(-1px)}
+.qbtn-out{background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;box-shadow:0 3px 12px rgba(245,158,11,.25)}
+.qbtn-out:hover{box-shadow:0 5px 18px rgba(245,158,11,.45);transform:translateY(-1px)}
+.qp-abtn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
+.qp-abtn-done{
+  padding:12px;border-radius:var(--r2);background:var(--ibg);
+  border:1px solid var(--ibd);color:#a5b4fc;font-size:13px;font-weight:700;
+  text-align:center;
 }
-.qp-flash.show{display:block}
-.qp-flash-icon{font-size:56px;margin-bottom:8px}
-.qp-flash-msg{font-size:17px;font-weight:800;margin-bottom:4px}
-.qp-flash-sub{font-size:13px;color:var(--text2)}
+.qp-note-inline{
+  width:100%;background:var(--surf3);border:1px solid var(--bd);color:var(--text);
+  font-family:var(--font);font-size:12.5px;padding:7px 11px;
+  border-radius:var(--r2);outline:none;transition:border-color var(--t);
+}
+.qp-note-inline:focus{border-color:var(--green)}
+
+/* Status dot on list */
+.qp-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.qp-dot-absent{background:var(--text3)}
+.qp-dot-in    {background:var(--green);box-shadow:0 0 6px var(--green)}
+.qp-dot-done  {background:var(--indigo);box-shadow:0 0 6px var(--indigo)}
+
+/* Flash success (fullscreen overlay) */
+.qp-flash-ov{
+  display:none;position:fixed;inset:0;z-index:900;
+  background:rgba(0,0,0,.7);backdrop-filter:blur(8px);
+  place-items:center;
+}
+.qp-flash-ov.show{display:grid}
+.qp-flash-box{
+  background:var(--surf);border:1px solid var(--bd2);border-radius:20px;
+  padding:36px 40px;text-align:center;max-width:320px;width:90vw;
+  animation:popIn .3s ease;box-shadow:0 24px 60px rgba(0,0,0,.6);
+}
+@keyframes popIn{from{transform:scale(.85);opacity:0}to{transform:scale(1);opacity:1}}
+.qp-flash-icon{font-size:64px;margin-bottom:10px}
+.qp-flash-msg{font-size:20px;font-weight:800;margin-bottom:6px}
+.qp-flash-sub{font-size:13px;color:var(--text2);margin-bottom:20px}
+.qp-flash-time{font-family:var(--mono);font-size:28px;font-weight:800;margin:8px 0 16px}
+
 @keyframes fadeIn{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
 /* ══════════════════════════════════════════
@@ -468,9 +496,8 @@ code{background:var(--surf2);padding:1px 6px;border-radius:4px;font-family:var(-
   #pg-staff .std th:nth-child(4),#pg-staff .std td:nth-child(4){display:none}
 
   /* Quick punch mobile: single column */
-  .qp-wrap{grid-template-columns:1fr;gap:12px}
-  .qp-big-btns{gap:8px}
-  .qp-big-btn{padding:14px 10px;font-size:14px}
+  .qp-action-btns{gap:8px}
+  .qp-abtn{padding:14px 10px;font-size:14px}
 
   /* Modal */
   .modal{width:97vw!important;border-radius:12px}
@@ -651,74 +678,32 @@ code{background:var(--surf2);padding:1px 6px;border-radius:4px;font-family:var(-
 
     <!-- ══ PAGE: CHẤM CÔNG NHANH ═══════════════════════ -->
     <div class="page" id="pg-quick">
-      <div class="qp-wrap">
-        <!-- Left: search list -->
-        <div class="qp-left">
-          <div class="qp-sec-title">👤 Chọn nhân viên</div>
-          <div class="qp-search-wrap">
-            <div class="qp-rel">
-              <span class="qp-si">🔍</span>
-              <input class="qp-search" id="qp-q" placeholder="Gõ tên hoặc mã NV..." oninput="qpFilter(this.value)" autocomplete="off"/>
-            </div>
+      <div class="qp-page">
+
+        <!-- Search + filter bar -->
+        <div class="qp-topbar">
+          <div class="qp-rel">
+            <span class="qp-si">🔍</span>
+            <input class="qp-search" id="qp-q" placeholder="Tìm tên hoặc mã nhân viên..." oninput="qpFilter(this.value)" autocomplete="off"/>
           </div>
-          <div class="qp-nv-list" id="qp-list">
-            <div class="empty" style="padding:20px"><div class="ei">⏳</div>Đang tải...</div>
-          </div>
+          <div class="qp-count" id="qp-count">0 người</div>
         </div>
 
-        <!-- Right: action -->
-        <div class="qp-right">
-          <div class="qp-sec-title">⚡ Chấm công</div>
-          <div class="qp-action-area">
-
-            <!-- Placeholder -->
-            <div class="qp-placeholder" id="qp-ph">
-              <div class="pi">👆</div>
-              <div style="font-size:14px;font-weight:600">Chọn nhân viên bên trái</div>
-              <div style="font-size:12px;color:var(--text3);margin-top:4px">rồi bấm Vào làm hoặc Ra về</div>
-            </div>
-
-            <!-- NV Card + Actions -->
-            <div class="qp-nv-card" id="qp-card">
-              <div class="qp-card-top">
-                <div class="av" id="qp-av" style="width:42px;height:42px;font-size:15px"></div>
-                <div>
-                  <div class="qp-card-name" id="qp-cname">–</div>
-                  <div class="qp-card-meta" id="qp-cmeta">–</div>
-                </div>
-                <button onclick="qpClear()" style="margin-left:auto;background:none;border:none;color:var(--text3);cursor:pointer;font-size:18px;padding:2px">✕</button>
-              </div>
-
-              <div class="qp-today-status" id="qp-status">
-                <span style="color:var(--text3)">Hôm nay:</span>
-                <span id="qp-s-badge"></span>
-                <span id="qp-s-in"  class="tch tch-in"  style="display:none"></span>
-                <span id="qp-s-arr" style="color:var(--text3);font-size:11px;display:none">→</span>
-                <span id="qp-s-out" class="tch tch-out" style="display:none"></span>
-              </div>
-
-              <input class="qp-note" id="qp-note" placeholder="💬 Ghi chú (tuỳ chọn)..."/>
-
-              <div class="qp-big-btns">
-                <button class="qp-big-btn qbtn-in"  id="qp-bin"  onclick="qpPunch('vao')">
-                  ☀️ VÀO LÀM<span id="qp-sub-in">Chưa chấm vào</span>
-                </button>
-                <button class="qp-big-btn qbtn-out" id="qp-bout" onclick="qpPunch('ra')">
-                  🌙 RA VỀ<span id="qp-sub-out">Chưa chấm ra</span>
-                </button>
-              </div>
-            </div>
-
-            <!-- Flash success -->
-            <div class="qp-flash" id="qp-flash">
-              <div class="qp-flash-icon" id="qp-fi">✅</div>
-              <div class="qp-flash-msg"  id="qp-fm">Chấm công thành công!</div>
-              <div class="qp-flash-sub"  id="qp-fs">–</div>
-              <button class="btn btn-s" style="margin-top:16px" onclick="qpClear()">← Chấm người khác</button>
-            </div>
-
-          </div>
+        <!-- Card list -->
+        <div class="qp-card-list" id="qp-list">
+          <div class="empty"><div class="ei">⏳</div>Đang tải...</div>
         </div>
+      </div>
+    </div>
+
+    <!-- Flash overlay -->
+    <div class="qp-flash-ov" id="qp-flash-ov" onclick="this.classList.remove('show')">
+      <div class="qp-flash-box">
+        <div class="qp-flash-icon" id="qp-fi">✅</div>
+        <div class="qp-flash-msg"  id="qp-fm">Chấm công thành công!</div>
+        <div class="qp-flash-time" id="qp-ft">–</div>
+        <div class="qp-flash-sub"  id="qp-fs">–</div>
+        <button class="btn btn-p" style="width:100%;margin-top:4px" onclick="document.getElementById('qp-flash-ov').classList.remove('show')">Tiếp tục</button>
       </div>
     </div>
 
@@ -1091,12 +1076,13 @@ function openEditCC(nv) {
 // ════════════════════════════════════════
 //  QUICK PUNCH PAGE
 // ════════════════════════════════════════
+let qpOpenId = null;
+
 async function loadQuick() {
   if (!nvAll.length) {
     const r = await callAPI('getDanhSachNV');
     nvAll = (r?.data || []).filter(n => n.trangThai === 'Đang làm việc');
   }
-  // Also ensure todayMap is loaded
   if (!Object.keys(todayMap).length) {
     const today = new Date().toISOString().slice(0, 10);
     const cr = await callAPI('getLichSuCC', {});
@@ -1106,136 +1092,132 @@ async function loadQuick() {
       if (r.gioRa)    todayMap[r.maNV].gioRa  = r.gioRa;
     });
   }
-  qpRenderList(nvAll);
-  qpClear();
+  qpFilter('');
 }
 
 function qpFilter(q) {
   const lq = q.toLowerCase().trim();
-  qpRenderList(lq ? nvAll.filter(n =>
+  const list = nvAll.filter(n =>
+    !lq ||
     n.maNV.toLowerCase().includes(lq) ||
     n.hoTen.toLowerCase().includes(lq) ||
     (n.phongBan||'').toLowerCase().includes(lq)
-  ) : nvAll);
+  );
+  const cnt = document.getElementById('qp-count');
+  if (cnt) cnt.textContent = `${list.length} nhân viên`;
+  qpRenderCards(list);
 }
 
-function qpRenderList(data) {
+function qpRenderCards(list) {
   const el = document.getElementById('qp-list');
-  if (!data.length) {
-    el.innerHTML = `<div class="empty" style="padding:20px"><div class="ei">🔍</div>Không tìm thấy</div>`;
+  if (!list.length) {
+    el.innerHTML = `<div class="empty"><div class="ei">🔍</div>Không tìm thấy nhân viên</div>`;
     return;
   }
-  el.innerHTML = data.map(nv => {
+  el.innerHTML = list.map(nv => {
     const [bg, fg] = avColor(nv.hoTen);
     const init = initials(nv.hoTen);
-    const rec = todayMap[nv.maNV] || {};
-    const dot = rec.gioVao && rec.gioRa ? '✅' : rec.gioVao ? '🟢' : '⭕';
-    return `<div class="qp-nv-item${qpSel?.maNV === nv.maNV ? ' sel' : ''}" onclick="qpSelect('${nv.maNV}')">
-      <div class="av" style="width:30px;height:30px;font-size:11px;background:${bg};color:${fg}">${init}</div>
-      <div style="flex:1;min-width:0">
-        <div class="qp-nv-name">${nv.hoTen}</div>
-        <div class="qp-nv-sub">${nv.maNV}${nv.phongBan?' · '+nv.phongBan:''}</div>
+    const rec  = todayMap[nv.maNV] || {};
+    const isDone   = !!(rec.gioVao && rec.gioRa);
+    const isIn     = !!(rec.gioVao && !rec.gioRa);
+    const isAbsent = !rec.gioVao;
+
+    const dotCls = isDone ? 'qp-dot-done' : isIn ? 'qp-dot-in' : 'qp-dot-absent';
+    const statusBadge = isDone
+      ? `<span class="badge b-indigo" style="font-size:10.5px">✅ Xong</span>`
+      : isIn
+        ? `<span class="badge b-green"  style="font-size:10.5px">☀️ Đang làm</span>`
+        : `<span class="badge b-gray"   style="font-size:10.5px">○ Chưa chấm</span>`;
+
+    const times = rec.gioVao
+      ? `<span class="tch tch-in">☀ ${rec.gioVao}</span>${rec.gioRa?`<span style="color:var(--text3);font-size:10px">→</span><span class="tch tch-out">🌙 ${rec.gioRa}</span>`:''}`
+      : '';
+
+    const pb = nv.phongBan ? ` · ${nv.phongBan}` : '';
+    const meta = nv.maNV + pb;
+
+    let actionBody;
+    if (isDone) {
+      actionBody = `<div class="qp-abtn-done">✅ Đã hoàn thành chấm công hôm nay<br/>
+        <span style="font-size:12px;font-family:var(--mono);color:var(--text2)">☀ ${rec.gioVao} &nbsp;→&nbsp; 🌙 ${rec.gioRa}</span></div>`;
+    } else {
+      const inDis  = isIn     ? 'disabled' : '';
+      const outDis = isAbsent ? 'disabled' : '';
+      const inSub  = isIn     ? `Đã vào: ${rec.gioVao}` : 'Chưa chấm vào';
+      const outSub = isAbsent ? 'Vào trước đã' : 'Chưa chấm ra';
+      actionBody = `
+        <input class="qp-note-inline" id="qpn-${nv.maNV}" placeholder="💬 Ghi chú (tuỳ chọn)..." style="margin-bottom:10px"/>
+        <div class="qp-action-btns">
+          <button class="qp-abtn qbtn-in"  ${inDis}  onclick="qpPunch2('${nv.maNV}','${escQ(nv.hoTen)}','vao',this)">
+            ☀️ VÀO LÀM<span>${inSub}</span>
+          </button>
+          <button class="qp-abtn qbtn-out" ${outDis} onclick="qpPunch2('${nv.maNV}','${escQ(nv.hoTen)}','ra',this)">
+            🌙 RA VỀ<span>${outSub}</span>
+          </button>
+        </div>`;
+    }
+
+    const isOpen = qpOpenId === nv.maNV;
+    return `<div class="qp-emp-card" id="qpemp-${nv.maNV}">
+      <div class="qp-emp-top" onclick="qpToggle('${nv.maNV}')">
+        <div class="av" style="width:38px;height:38px;font-size:14px;background:${bg};color:${fg}">${init}</div>
+        <div class="qp-emp-info">
+          <div class="qp-emp-name">${nv.hoTen}</div>
+          <div class="qp-emp-meta">${meta}</div>
+          <div class="qp-emp-times">${times}</div>
+        </div>
+        <div style="display:flex;align-items:center;gap:8px;flex-shrink:0">
+          ${statusBadge}
+          <div class="qp-dot ${dotCls}"></div>
+          <span style="color:var(--text3);font-size:18px;transition:transform .2s;display:inline-block;transform:rotate(${isOpen?'90':'0'}deg)">›</span>
+        </div>
       </div>
-      <span style="font-size:13px">${dot}</span>
+      <div class="qp-emp-body${isOpen?' open':''}" id="qpbody-${nv.maNV}">${actionBody}</div>
     </div>`;
   }).join('');
 }
 
-function qpSelect(maNV) {
-  const nv = nvAll.find(n => n.maNV === maNV);
-  if (!nv) return;
-  qpSel = nv;
-  qpRenderList(nvAll.filter(n => {
-    const q = (document.getElementById('qp-q')?.value || '').toLowerCase();
-    return !q || n.maNV.toLowerCase().includes(q) || n.hoTen.toLowerCase().includes(q);
-  }));
-
-  const [bg, fg] = avColor(nv.hoTen);
-  const init = initials(nv.hoTen);
-  document.getElementById('qp-av').style.cssText = `width:42px;height:42px;font-size:15px;background:${bg};color:${fg}`;
-  document.getElementById('qp-av').textContent = init;
-  document.getElementById('qp-cname').textContent = nv.hoTen;
-  document.getElementById('qp-cmeta').textContent  = [nv.maNV, nv.phongBan, nv.chucVu].filter(Boolean).join(' · ');
-  qpUpdStatus(maNV);
-
-  document.getElementById('qp-ph').style.display   = 'none';
-  document.getElementById('qp-card').classList.add('show');
-  document.getElementById('qp-flash').classList.remove('show');
-  document.getElementById('qp-note').value = '';
-}
-
-function qpUpdStatus(maNV) {
-  const rec   = todayMap[maNV] || {};
-  const binEl = document.getElementById('qp-bin');
-  const boutEl= document.getElementById('qp-bout');
-  const badge = document.getElementById('qp-s-badge');
-  const si    = document.getElementById('qp-s-in');
-  const so    = document.getElementById('qp-s-out');
-  const arr   = document.getElementById('qp-s-arr');
-
-  si.style.display  = rec.gioVao ? 'inline' : 'none';
-  arr.style.display = rec.gioVao ? 'inline' : 'none';
-  so.style.display  = rec.gioRa  ? 'inline' : 'none';
-  if (rec.gioVao) si.textContent = `☀ ${rec.gioVao}`;
-  if (rec.gioRa)  so.textContent = `🌙 ${rec.gioRa}`;
-
-  if (rec.gioVao && rec.gioRa) {
-    badge.innerHTML = `<span class="badge b-indigo">✅ Hoàn thành</span>`;
-    binEl.disabled  = true;
-    boutEl.disabled = true;
-    document.getElementById('qp-sub-in').textContent  = rec.gioVao;
-    document.getElementById('qp-sub-out').textContent = rec.gioRa;
-  } else if (rec.gioVao) {
-    badge.innerHTML = `<span class="badge b-green">☀️ Đang làm</span>`;
-    binEl.disabled  = true;
-    boutEl.disabled = false;
-    document.getElementById('qp-sub-in').textContent  = `Vào: ${rec.gioVao}`;
-    document.getElementById('qp-sub-out').textContent = 'Chưa chấm ra';
-  } else {
-    badge.innerHTML = `<span class="badge b-red">⚠️ Chưa chấm</span>`;
-    binEl.disabled  = false;
-    boutEl.disabled = false;
-    document.getElementById('qp-sub-in').textContent  = 'Chưa chấm vào';
-    document.getElementById('qp-sub-out').textContent = 'Chưa chấm ra';
+function qpToggle(maNV) {
+  const wasOpen = qpOpenId === maNV;
+  qpOpenId = wasOpen ? null : maNV;
+  qpFilter(document.getElementById('qp-q')?.value || '');
+  if (!wasOpen) {
+    setTimeout(() => {
+      const el = document.getElementById('qpemp-' + maNV);
+      if (el) el.scrollIntoView({ behavior:'smooth', block:'nearest' });
+    }, 120);
   }
 }
 
-async function qpPunch(loai) {
-  if (!qpSel) return;
-  const { maNV, hoTen } = qpSel;
-  const note = document.getElementById('qp-note').value;
-  document.getElementById('qp-bin').disabled  = true;
-  document.getElementById('qp-bout').disabled = true;
-
-  const res = await callAPI('chamCong', { maNV, hoTen, loai, trangThai: 'Đúng giờ', ghiChu: note });
-  if (!res?.success) {
-    qpUpdStatus(maNV); return;
-  }
+async function qpPunch2(maNV, hoTen, loai, btn) {
+  btn.disabled = true;
+  const note = document.getElementById(`qpn-${maNV}`)?.value || '';
+  const res = await callAPI('chamCong', { maNV, hoTen, loai, trangThai:'Đúng giờ', ghiChu: note });
+  if (!res?.success) { btn.disabled = false; return; }
 
   if (!todayMap[maNV]) todayMap[maNV] = { gioVao:'', gioRa:'', trangThai:'', id: res.id };
   if (loai === 'vao') { todayMap[maNV].gioVao = res.gio; todayMap[maNV].id = res.id; }
   else                  todayMap[maNV].gioRa  = res.gio;
 
-  // Refresh today list in background
   if (attFull.length) buildAtt();
 
-  // Flash
+  // Flash overlay
   document.getElementById('qp-fi').textContent = loai === 'vao' ? '☀️' : '🌙';
-  document.getElementById('qp-fm').textContent = loai === 'vao' ? 'Đã chấm VÀO làm!' : 'Đã chấm RA về!';
-  document.getElementById('qp-fs').textContent = `${hoTen}  ·  ${res.gio}`;
-  document.getElementById('qp-card').classList.remove('show');
-  document.getElementById('qp-flash').classList.add('show');
-  qpRenderList(nvAll);
-  toast(`${loai==='vao'?'☀️':'🌙'} ${hoTen} · ${res.gio}`, 'ok');
+  document.getElementById('qp-fm').textContent = loai === 'vao' ? 'Đã chấm VÀO LÀM!' : 'Đã chấm RA VỀ!';
+  document.getElementById('qp-ft').textContent = res.gio;
+  document.getElementById('qp-fs').textContent = hoTen;
+  document.getElementById('qp-flash-ov').classList.add('show');
+  setTimeout(() => document.getElementById('qp-flash-ov').classList.remove('show'), 2500);
+
+  // Re-render to show updated status
+  qpFilter(document.getElementById('qp-q')?.value || '');
 }
 
-function qpClear() {
-  qpSel = null;
-  document.getElementById('qp-ph').style.display = 'block';
-  document.getElementById('qp-card').classList.remove('show');
-  document.getElementById('qp-flash').classList.remove('show');
-  document.querySelectorAll('.qp-nv-item').forEach(i => i.classList.remove('sel'));
-}
+// Stub compat
+let qpSel = null;
+function qpClear()  { qpOpenId = null; }
+function qpSelect() {}
+function qpPunch()  {}
 
 // ════════════════════════════════════════
 //  HISTORY
