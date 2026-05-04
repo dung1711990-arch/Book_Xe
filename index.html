@@ -286,8 +286,10 @@ table.att tbody tr:hover,table.std tbody tr:hover{background:rgba(255,255,255,.0
   background:var(--surf2);display:grid;place-items:center;flex-shrink:0;
   transition:all var(--t);
 }
-.qp-emp-card.sel    .qp-cb{background:var(--green);border-color:var(--green)}
-.qp-emp-card.sel    .qp-cb::after{content:'✓';color:#fff;font-size:13px;font-weight:900}
+.qp-emp-card.sel    .qp-cb,
+.qp-cb[data-sel="1"]{background:var(--green);border-color:var(--green)}
+.qp-emp-card.sel    .qp-cb::after,
+.qp-cb[data-sel="1"]::after{content:'✓';color:#fff;font-size:13px;font-weight:900}
 .qp-emp-card.punched .qp-cb{background:var(--ibg);border-color:var(--ibd)}
 .qp-emp-card.punched .qp-cb::after{content:'✓';color:#a5b4fc;font-size:13px;font-weight:900}
 
@@ -934,12 +936,19 @@ function escQ(s) { return s.replace(/'/g, "\\'"); }
 //  These helpers extract the correct value
 // ════════════════════════════════════════
 function parseD(v) {
-  // Normalize to "yyyy-MM-dd"
+  // Normalize to "yyyy-MM-dd" — handle ISO string with UTC offset
   if (!v) return '';
   const s = String(v).trim();
   if (!s || s === '–') return '';
-  if (s.includes('T')) return s.slice(0, 10);  // ISO → date part
-  return s;
+  if (s.includes('T')) {
+    try {
+      // "2026-05-03T17:00:00.000Z" = midnight Vietnam time (UTC+7)
+      // Must add 7h offset to get correct Vietnam date
+      const ms = new Date(s).getTime() + 7 * 3600000;
+      return new Date(ms).toISOString().slice(0, 10);
+    } catch(e) { return s.slice(0, 10); }
+  }
+  return s.length >= 10 ? s.slice(0, 10) : s;
 }
 
 function parseT(v) {
@@ -1139,12 +1148,221 @@ function openEditCC(nv) {
 }
 
 // ════════════════════════════════════════
-//  QUICK PUNCH — checkbox bulk select
+//  QUICK PUNCH — event delegation, no inline onclick
 // ════════════════════════════════════════
-let qpOpenId = null;
-let qpSel    = null;
-// Map: maNV → 'full'|'half'
-const qpSelMap = new Map();
+const qpSelMap = new Map(); // maNV → 'full'|'half'
+let   qpListData = [];      // current filtered list
+
+async function loadQuick() {
+  // Always refresh today data when entering this page
+  const today = new Date().toISOString().slice(0, 10);
+  const [nr, cr] = await Promise.all([
+    nvAll.length ? null : callAPI('getDanhSachNV'),
+    callAPI('getLichSuCC', {})
+  ]);
+  if (nr) nvAll = (nr.data || []).filter(n => n.trangThai === 'Đang làm việc');
+
+  // Rebuild todayMap fresh
+  todayMap = {};
+  (cr?.data || []).filter(r => parseD(r.ngayChamCong) === today).forEach(r => {
+    const rec = normRecord(r);
+    const key = rec.maNV;
+    if (!todayMap[key]) todayMap[key] = { gioVao:'', gioRa:'', trangThai:'', id: rec.id };
+    if (rec.gioVao) { todayMap[key].gioVao = rec.gioVao; todayMap[key].id = rec.id; }
+    if (rec.gioRa)    todayMap[key].gioRa  = rec.gioRa;
+    if (rec.trangThai) todayMap[key].trangThai = rec.trangThai;
+  });
+
+  // Init event delegation (once)
+  initQPDelegate();
+  qpFilter('');
+}
+
+/* Event delegation — one listener handles all clicks */
+function initQPDelegate() {
+  const el = document.getElementById('qp-list');
+  if (!el || el._qpReady) return;
+  el._qpReady = true;
+
+  el.addEventListener('click', function(e) {
+    // Công button click
+    const congBtn = e.target.closest('[data-cong]');
+    if (congBtn) {
+      e.stopPropagation();
+      const maNV = congBtn.closest('[data-id]')?.dataset.id;
+      const val  = congBtn.dataset.cong;
+      if (maNV && qpSelMap.has(maNV)) {
+        qpSelMap.set(maNV, val);
+        qpRenderCards(qpListData);
+      }
+      return;
+    }
+
+    // Card click → toggle selection
+    const card = e.target.closest('[data-id]');
+    if (!card) return;
+    if (card.dataset.punched === '1') return; // already punched
+    const maNV = card.dataset.id;
+    if (!maNV) return;
+
+    if (qpSelMap.has(maNV)) qpSelMap.delete(maNV);
+    else qpSelMap.set(maNV, 'full');
+
+    // Fast in-place update (no full re-render for snappiness)
+    const isSel = qpSelMap.has(maNV);
+    card.classList.toggle('sel', isSel);
+    const cb = card.querySelector('.qp-cb');
+    if (cb) { cb.dataset.sel = isSel ? '1' : '0'; }
+
+    // Toggle the cong buttons
+    let toggle = card.querySelector('.cong-toggle');
+    if (isSel && !toggle) {
+      const val = qpSelMap.get(maNV) || 'full';
+      const div = document.createElement('div');
+      div.className = 'cong-toggle';
+      div.innerHTML = `
+        <button class="cong-btn full-act" data-cong="full">1 công</button>
+        <button class="cong-btn"          data-cong="half">½ công</button>`;
+      const dot = card.querySelector('.qp-dot');
+      card.querySelector('.qp-emp-top').insertBefore(div, dot);
+    } else if (!isSel && toggle) {
+      toggle.remove();
+    }
+
+    updBulkBar();
+  });
+}
+
+function qpFilter(q) {
+  const lq = q.toLowerCase().trim();
+  qpListData = nvAll.filter(n =>
+    !lq ||
+    n.maNV.toLowerCase().includes(lq) ||
+    n.hoTen.toLowerCase().includes(lq) ||
+    (n.phongBan||'').toLowerCase().includes(lq)
+  );
+  const cnt = document.getElementById('qp-count');
+  if (cnt) cnt.textContent = `${qpListData.length} nhân viên`;
+  qpRenderCards(qpListData);
+  updBulkBar();
+}
+
+function qpRenderCards(list) {
+  const el = document.getElementById('qp-list');
+  if (!list.length) { el.innerHTML = `<div class="empty"><div class="ei">🔍</div>Không tìm thấy</div>`; return; }
+
+  el.innerHTML = list.map(nv => {
+    const [bg, fg] = avColor(nv.hoTen);
+    const init     = initials(nv.hoTen);
+    const rec      = todayMap[nv.maNV] || {};
+    const isPunched = !!(rec.gioVao);
+    const isSel     = qpSelMap.has(nv.maNV);
+    const congVal   = qpSelMap.get(nv.maNV) || 'full';
+    const pb        = nv.phongBan ? ` · ${nv.phongBan}` : '';
+
+    // Status badge
+    let badge, timeChip = '';
+    if (isPunched) {
+      const tt = rec.trangThai || 'Đúng giờ';
+      badge    = `<span class="badge b-indigo" style="font-size:10.5px;flex-shrink:0">✅ ${tt === 'Nửa công' ? '½ công' : '1 công'}</span>`;
+      timeChip = `<span class="tch tch-in">⏰ ${rec.gioVao}</span>`;
+    } else {
+      badge = `<span class="badge b-gray" style="font-size:10.5px;flex-shrink:0">○ Chưa chấm</span>`;
+    }
+
+    // Công toggle (rendered only when selected & not punched)
+    const toggleHtml = (isSel && !isPunched) ? `
+      <div class="cong-toggle">
+        <button class="cong-btn ${congVal==='full'?'full-act':''}" data-cong="full">1 công</button>
+        <button class="cong-btn ${congVal==='half'?'half-act':''}" data-cong="half">½ công</button>
+      </div>` : '';
+
+    const cardCls = isPunched ? 'punched' : isSel ? 'sel' : '';
+
+    /* NO inline onclick — data-id drives event delegation */
+    return `<div class="qp-emp-card ${cardCls}" data-id="${nv.maNV}" data-punched="${isPunched?1:0}">
+      <div class="qp-emp-top">
+        <div class="qp-cb" data-sel="${isSel?1:0}"></div>
+        <div class="av" style="width:36px;height:36px;font-size:13px;background:${bg};color:${fg};flex-shrink:0">${init}</div>
+        <div class="qp-emp-info">
+          <div class="qp-emp-name">${nv.hoTen}</div>
+          <div class="qp-emp-meta">${nv.maNV}${pb}</div>
+          <div class="qp-emp-times">${timeChip}</div>
+        </div>
+        ${toggleHtml}
+        ${badge}
+        <div class="qp-dot ${isPunched?'qp-dot-in':'qp-dot-absent'}"></div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+/* Bulk select helpers */
+function qpSelectAbsent() {
+  nvAll.forEach(nv => { if (!todayMap[nv.maNV]?.gioVao) qpSelMap.set(nv.maNV, 'full'); });
+  qpRenderCards(qpListData); updBulkBar();
+}
+function qpSelectAll() {
+  nvAll.forEach(nv => { if (!todayMap[nv.maNV]?.gioVao) qpSelMap.set(nv.maNV, 'full'); });
+  qpRenderCards(qpListData); updBulkBar();
+}
+function qpClearSel() {
+  qpSelMap.clear();
+  qpRenderCards(qpListData); updBulkBar();
+}
+
+function updBulkBar() {
+  const n = qpSelMap.size;
+  const bar = document.getElementById('bulk-bar');
+  const cnt = document.getElementById('bulk-count');
+  if (!bar) return;
+  bar.classList.toggle('show', n > 0);
+  if (cnt && n > 0) cnt.textContent = n;
+}
+
+async function qpBulkPunch() {
+  if (!qpSelMap.size) return;
+  const btn = document.getElementById('bulk-btn');
+  btn.disabled = true; btn.textContent = '⏳ Đang chấm...';
+
+  const now     = new Date().toLocaleTimeString('vi-VN', { hour12:false });
+  const entries = [...qpSelMap.entries()];
+  let ok = 0;
+
+  for (const [maNV, congVal] of entries) {
+    const nv = nvAll.find(n => n.maNV === maNV);
+    if (!nv) continue;
+    const trangThai = congVal === 'half' ? 'Nửa công' : 'Đúng giờ';
+    const res = await callAPI('chamCong', { maNV, hoTen: nv.hoTen, loai: 'vao', trangThai, ghiChu: '' });
+    if (res?.success) {
+      todayMap[maNV] = { gioVao: res.gio || now, gioRa:'', trangThai, id: res.id };
+      ok++;
+    }
+  }
+
+  qpSelMap.clear();
+  updBulkBar();
+  qpRenderCards(qpListData); // Re-render with updated todayMap
+  buildAtt();                // Refresh "Hôm nay" page cache
+
+  // Flash
+  document.getElementById('qp-fm').textContent = `Đã chấm ${ok}/${entries.length} nhân viên!`;
+  document.getElementById('qp-ft').textContent = now;
+  const nHalf = entries.filter(([,v])=>v==='half').length;
+  document.getElementById('qp-fs').textContent =
+    `${entries.length - nHalf} người đủ công · ${nHalf} người nửa công`;
+  document.getElementById('qp-flash-ov').classList.add('show');
+  setTimeout(() => document.getElementById('qp-flash-ov').classList.remove('show'), 3000);
+
+  btn.disabled = false; btn.textContent = '⚡ Chấm công ngay';
+  toast(`✅ Đã chấm ${ok} nhân viên lúc ${now}`, 'ok');
+}
+
+// Stubs for backward compat
+function qpClear()  {}
+function qpSelect() {}
+function qpPunch()  {}
+function qpPunch2() {}
 
 async function loadQuick() {
   if (!nvAll.length) {
@@ -1317,12 +1535,6 @@ async function qpBulkPunch() {
   btn.disabled = false; btn.textContent = '⚡ Chấm công ngay';
   toast(`✅ Đã chấm ${ok}/${entries.length} nhân viên lúc ${now}`, 'ok');
 }
-
-// Stub compat
-function qpClear()  {}
-function qpSelect() {}
-function qpPunch()  {}
-function qpPunch2() {}
 
 // ════════════════════════════════════════
 //  HISTORY
