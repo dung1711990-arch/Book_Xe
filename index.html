@@ -763,6 +763,17 @@ code{background:var(--surf2);padding:1px 6px;border-radius:4px;font-family:var(-
         </div>
         <div id="cfg-res" style="margin-top:10px;font-size:13px"></div>
       </div>
+      <div class="sc" style="border-color:rgba(245,158,11,.3)">
+        <div class="sc-title">🔧 Sửa dữ liệu cũ bị lỗi ngày/giờ</div>
+        <div style="font-size:13px;color:var(--text2);margin-bottom:12px;line-height:1.7">
+          Nếu lịch sử chấm công hiển thị ngày/giờ sai (dạng <code>1899-12-29T18:02:56.000Z</code>),<br/>
+          bấm nút dưới để tự động sửa toàn bộ dữ liệu trong Google Sheet.
+        </div>
+        <button class="btn" style="background:rgba(245,158,11,.15);color:var(--amber);border:1px solid rgba(245,158,11,.3)" onclick="fixOldData()">
+          🔧 Sửa dữ liệu ngày/giờ cũ
+        </button>
+        <div id="fix-res" style="margin-top:10px;font-size:13px"></div>
+      </div>
       <div class="sc">
         <div class="sc-title">📘 Hướng dẫn cài đặt</div>
         <div class="guide">
@@ -906,6 +917,47 @@ function initials(s) { return s.split(' ').slice(-2).map(w => w[0]).join('').toU
 function escQ(s) { return s.replace(/'/g, "\\'"); }
 
 // ════════════════════════════════════════
+//  DATE / TIME NORMALIZATION
+//  Google Sheets auto-converts strings → Date objects
+//  JSON serializes them as ISO strings like:
+//    "2026-05-03T17:00:00.000Z"  (date)
+//    "1899-12-29T18:02:56.000Z"  (time-only)
+//  These helpers extract the correct value
+// ════════════════════════════════════════
+function parseD(v) {
+  // Normalize to "yyyy-MM-dd"
+  if (!v) return '';
+  const s = String(v).trim();
+  if (!s || s === '–') return '';
+  if (s.includes('T')) return s.slice(0, 10);  // ISO → date part
+  return s;
+}
+
+function parseT(v) {
+  // Normalize to "HH:mm:ss"
+  if (!v) return '';
+  const s = String(v).trim();
+  if (!s || s === '–') return '';
+  if (s.includes('T')) {
+    // e.g. "1899-12-29T18:02:56.000Z" → take the T...Z time part
+    const m = s.match(/T(\d{2}:\d{2}:\d{2})/);
+    return m ? m[1] : '';
+  }
+  return s;
+}
+
+function normRecord(r) {
+  // Normalize all fields of a ChamCong record
+  return {
+    ...r,
+    maNV:         String(r.maNV || '').trim(),
+    ngayChamCong: parseD(r.ngayChamCong),
+    gioVao:       parseT(r.gioVao),
+    gioRa:        parseT(r.gioRa),
+  };
+}
+
+// ════════════════════════════════════════
 //  STATUS BADGE
 // ════════════════════════════════════════
 function sbadge(s) {
@@ -931,11 +983,15 @@ async function loadToday() {
 
   nvAll = (nr.data || []).filter(n => n.trangThai === 'Đang làm việc');
   todayMap = {};
-  (cr.data || []).filter(r => r.ngayChamCong === today).forEach(r => {
-    if (!todayMap[r.maNV]) todayMap[r.maNV] = { gioVao:'', gioRa:'', trangThai:'', id: r.id };
-    if (r.gioVao) { todayMap[r.maNV].gioVao = r.gioVao; todayMap[r.maNV].id = r.id; }
-    if (r.gioRa)    todayMap[r.maNV].gioRa  = r.gioRa;
-    if (r.trangThai) todayMap[r.maNV].trangThai = r.trangThai;
+  (cr.data || []).filter(r => {
+    const d = parseD(r.ngayChamCong);
+    return d === today;
+  }).forEach(r => {
+    const rec = normRecord(r);
+    if (!todayMap[rec.maNV]) todayMap[rec.maNV] = { gioVao:'', gioRa:'', trangThai:'', id: rec.id };
+    if (rec.gioVao) { todayMap[rec.maNV].gioVao = rec.gioVao; todayMap[rec.maNV].id = rec.id; }
+    if (rec.gioRa)    todayMap[rec.maNV].gioRa  = rec.gioRa;
+    if (rec.trangThai) todayMap[rec.maNV].trangThai = rec.trangThai;
   });
 
   buildAtt();
@@ -1086,10 +1142,11 @@ async function loadQuick() {
   if (!Object.keys(todayMap).length) {
     const today = new Date().toISOString().slice(0, 10);
     const cr = await callAPI('getLichSuCC', {});
-    (cr?.data || []).filter(r => r.ngayChamCong === today).forEach(r => {
-      if (!todayMap[r.maNV]) todayMap[r.maNV] = { gioVao:'', gioRa:'', trangThai:'', id: r.id };
-      if (r.gioVao) { todayMap[r.maNV].gioVao = r.gioVao; todayMap[r.maNV].id = r.id; }
-      if (r.gioRa)    todayMap[r.maNV].gioRa  = r.gioRa;
+    (cr?.data || []).filter(r => parseD(r.ngayChamCong) === today).forEach(r => {
+      const rec = normRecord(r);
+      if (!todayMap[rec.maNV]) todayMap[rec.maNV] = { gioVao:'', gioRa:'', trangThai:'', id: rec.id };
+      if (rec.gioVao) { todayMap[rec.maNV].gioVao = rec.gioVao; todayMap[rec.maNV].id = rec.id; }
+      if (rec.gioRa)    todayMap[rec.maNV].gioRa  = rec.gioRa;
     });
   }
   qpFilter('');
@@ -1235,7 +1292,9 @@ async function loadHist() {
     denNgay:document.getElementById('f-to').value
   });
   if (!res) return;
-  histAll = (res.data || []).sort((a, b) => b.ngayChamCong.localeCompare(a.ngayChamCong));
+  histAll = (res.data || [])
+    .map(r => normRecord(r))
+    .sort((a, b) => b.ngayChamCong.localeCompare(a.ngayChamCong));
   renderHist(histAll);
 }
 
@@ -1451,13 +1510,17 @@ async function doExport() {
       days.push({ d, dow: DOW[dt.getDay()], key, wknd: dt.getDay() === 0 || dt.getDay() === 6 });
     }
 
-    // Build lookup
+    // Build lookup: maNV → { date → { vao, ra } }
     const lup = {};
     (cr.data || []).forEach(r => {
-      if (!lup[r.maNV]) lup[r.maNV] = {};
-      if (!lup[r.maNV][r.ngayChamCong]) lup[r.maNV][r.ngayChamCong] = { vao:'', ra:'' };
-      if (r.gioVao) lup[r.maNV][r.ngayChamCong].vao = r.gioVao;
-      if (r.gioRa)  lup[r.maNV][r.ngayChamCong].ra  = r.gioRa;
+      const rec  = normRecord(r);
+      const maNV = rec.maNV;
+      const d    = rec.ngayChamCong;
+      if (!maNV || !d) return;
+      if (!lup[maNV]) lup[maNV] = {};
+      if (!lup[maNV][d]) lup[maNV][d] = { vao:'', ra:'' };
+      if (rec.gioVao) lup[maNV][d].vao = rec.gioVao;
+      if (rec.gioRa)  lup[maNV][d].ra  = rec.gioRa;
     });
 
     function cong(v, r) {
@@ -1544,6 +1607,18 @@ async function doExport() {
     closeM('m-export');
   } finally {
     btn.disabled = false; btn.textContent = '📊 Tạo & Tải về';
+  }
+}
+
+async function fixOldData() {
+  const el  = document.getElementById('fix-res');
+  el.innerHTML = '<div style="display:flex;align-items:center;gap:8px"><div class="spin"></div> Đang sửa dữ liệu...</div>';
+  const res = await callAPI('fixData');
+  if (res?.success) {
+    el.innerHTML = `<span style="color:var(--green)">✅ ${res.message}</span>`;
+    toast('✅ ' + res.message, 'ok');
+  } else {
+    el.innerHTML = `<span style="color:var(--red)">❌ ${res?.message || 'Lỗi không xác định'}</span>`;
   }
 }
 
